@@ -25,3 +25,24 @@ declare type Gender = 'male' | 'female';
 declare interface BergfestGamesState  {
 	teams: Array<Team>;
 }
+
+declare interface CompleteState {
+	games: BergfestGamesState
+}
+
+interface IStringMap<T> {
+	[key: string]: T;
+}
+
+interface IAction extends IStringMap<any> {
+	type: string;
+}
+
+interface IReducerFunction<State> {
+	(currentState: State, action: IAction): State;
+}
+
+type ReducerMap<Actions extends object, State> = {
+	[key in keyof Actions]: IReducerFunction<State>;
+};
+

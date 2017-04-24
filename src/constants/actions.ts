@@ -1,11 +1,13 @@
-export const ADD_TEAM = 'ADD_TEAM';
-export const UPDATE_BARBELL_LIFT = 'UPDATE_BARBELL_LIFT';
-export const UPDATE_STRONGMAN_LIFT = 'UPDATE_STRONGMAN_LIFT';
+const ActionTypes = {
+	ADD_TEAM: 'ADD_TEAM',
+	UPDATE_BARBELL_LIFT: 'UPDATE_BARBELL_LIFT',
+	UPDATE_STRONGMAN_LIFT: 'UPDATE_STRONGMAN_LIFT',
+};
 
 export function addTeam(teamName: string) {
 
 	return {
-		type: ADD_TEAM,
+		type: ActionTypes.ADD_TEAM,
 		payload: {
 			name: teamName,
 			barbellLifts: {
@@ -34,24 +36,26 @@ export function addTeam(teamName: string) {
 	}
 }
 
-export function updateBarbelllift(teamname: string, liftname: string, amount: number) {
+export function updateBarbelllift(teamName: string, lift: string, amount: number) {
 	return {
-		type: UPDATE_BARBELL_LIFT,
+		type: ActionTypes.UPDATE_BARBELL_LIFT,
 		payload: {
-			teamname,
-			liftname,
+			teamName,
+			lift,
 			amount
 		}
 	}
 }
 
-export function updateStrongManLift(teamname: string, liftname: string, amount: number) {
+export function updateStrongManLift(teamName: string, lift: string, amount: number) {
 	return {
-		type: UPDATE_STRONGMAN_LIFT,
+		type: ActionTypes.UPDATE_STRONGMAN_LIFT,
 		payload: {
-			teamname,
-			liftname,
+			teamName,
+			lift,
 			amount
 		}
 	}
 }
+
+export default ActionTypes;

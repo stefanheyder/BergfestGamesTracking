@@ -1,10 +1,6 @@
 import { combineReducers, Reducer } from 'redux';
-import todos from './bergfestgames';
+import games from './bergfestgames';
 
-export interface RootState {
-
-}
-
-export default combineReducers<RootState>({
-  todos
+export default combineReducers<BergfestGamesState>({
+	games
 });
