@@ -3,34 +3,46 @@ import * as style from "./style.css";
 import { connect } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { RootState } from "reducers";
+import { addTeam } from "../../constants/actions";
 
 export namespace App {
-  export interface Props extends RouteComponentProps<void> {
-  }
+	export interface Props extends RouteComponentProps<void> {
+		addTeam: typeof addTeam;
+	}
 
-  export interface State {
+	export interface State {
 
-  }
+	}
 }
 
 @connect(mapStateToProps, mapDispatchToProps)
 export class App extends React.Component<App.Props, App.State> {
 
-  render() {
-    const { children } = this.props;
-    return (
-      <div className={style.normal}>
-      </div>
-    );
-  }
+	constructor() {
+		super();
+		this.handleClick = this.handleClick.bind(this);
+	}
+
+	handleClick() {
+		this.props.addTeam('myNewTeam');
+	}
+
+	render() {
+		const {children} = this.props;
+		return (
+			<div className={style.normal}>
+				<button onClick={this.handleClick}> My Button</button>
+			</div>
+		);
+	}
 }
 
 function mapStateToProps(state: RootState) {
-  return {
-  };
+	return {};
 }
 
 function mapDispatchToProps(dispatch) {
-  return {
-  };
+	return {
+		addTeam: (teamName: string) => {dispatch(addTeam(teamName))}
+	};
 }

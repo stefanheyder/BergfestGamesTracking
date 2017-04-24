@@ -1,5 +1,5 @@
 import { combineReducers, Reducer } from 'redux';
-import todos from './todos';
+import todos from './bergfestgames';
 
 export interface RootState {
 
