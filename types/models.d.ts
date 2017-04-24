@@ -1,13 +1,29 @@
-/** TodoMVC model definitions **/
-
-declare interface TodoItemData {
-  id?: TodoItemId;
-  text?: string;
-  completed?: boolean;
+declare interface Team {
+	barbellLifts: Array<BarbellLift>;
+	strongmanLifts: Array<StrongManLift>;
 }
 
-declare type TodoItemId = number;
+declare interface Person {
+	name: string;
+	gender: Gender;
+}
 
-declare type TodoFilterType = 'SHOW_ALL' | 'SHOW_ACTIVE' | 'SHOW_COMPLETED';
+declare interface ILift {
+	person: Person;
+}
 
-declare type TodoStoreState = TodoItemData[];
+declare interface BarbellLift extends ILift {
+	type: 'BenchPress' | 'Squat' | 'Deadlift';
+	weight: number;
+}
+
+declare interface StrongManLift extends ILift{
+	type: 'AtlasStone' | 'FarmerWalk' | 'TireFlip';
+	amount: number;
+}
+
+declare type Gender = 'male' | 'female';
+
+declare interface BergfestGamesState  {
+	teams: Array<Team>;
+}
