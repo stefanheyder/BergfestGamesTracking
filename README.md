@@ -26,7 +26,7 @@ php artisan key:generate
 
 To start the application run
 ```
-php artisan serve
+php artisan serve --host 0.0.0.0 --port 8080
 ```
 or setup an NGINX/XAMPP server using the `./public` directory.
 
