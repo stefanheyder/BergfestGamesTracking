@@ -13,7 +13,7 @@ To setup the databse, run
 ```
 mysql -u root -p
 # create the database 
->>> create databse laravel;
+>>> create database laravel;
 # verify that the databse exists
 >>> show databases;
 ```
@@ -22,6 +22,11 @@ Exit the mysql terminal and copy the `.env.example` file to `.env`, changing the
 Now prepare the Application key:
 ```
 php artisan key:generate
+```
+
+You can put all teams into the file `storage/data/teams`, separated by newlines. To load the teams into the databse run 
+```
+php artisan db:seed
 ```
 
 To start the application run
