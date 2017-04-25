@@ -10,6 +10,17 @@ class Team extends Model
         'name'
     ];
 
+    public function lift($type) {
+        $lift = Lift::where('team_id', $this->id)->where('Type', $type)->first();
+        if(!isset($lift)) {
+            $lift = new Lift;
+            $lift->team_id = $this->id;
+            $lift->Type = $type;
+            $lift->amount = 0;
+        }
+        return $lift;
+    }
+
     public function lifts() {
         $lifts = Lift::where('team_id', $this->id)->get()->sortBy('amount');
 

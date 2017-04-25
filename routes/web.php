@@ -29,9 +29,8 @@ Route::get('kdk/{type}/{team_id}', function($type, $team_id) {
 Route::put('kdk/{type}/{team_id}', function($type, $team_id) {
     $team = App\Team::find($team_id);
     if ($team) {
-        $lift = new App\Lift;
-        $lift->team_id = $team_id;
-        $lift->type = liftTypeFromShort($type);
+        $longType = liftTypeFromShort($type);
+        $lift = $team->lift($longType);
         $lift->amount = Request::input('amount');
         $lift->save();
     }
@@ -81,12 +80,7 @@ Route::put('strong/{type}/{team_id}', function($type, $team_id) {
     $team = App\Team::find($team_id);
     $longType = liftTypeFromShort($type);
     if ($team) {
-        $lift = App\Lift::where('team_id', $team_id)->where('Type', $longType)->first();
-        if (!isset($lift)) {
-            $lift = new App\Lift;
-            $lift->team_id = $team_id;
-            $lift->Type = $longType;
-        }
+        $lift = $team->lift($longType);
         $lift->amount = $lift->amount + 1;
         $lift->save();
     }
@@ -112,11 +106,20 @@ Route::get('scores', function() {
         $lifts = $team->lifts();
         return $lifts['AtlasStone'] + $lifts['TireFlip'] + $lifts['FarmerWalk'];
     };
-    $nameOfTeam = function ($team) {
-        return $team->name;
+
+    $idOfTeam = function ($team) {
+        return $team->id;
     };
-    $byKDK = $teams->sortBy($scoringKDK)->map($nameOfTeam)->toArray();
-    $byStrong = $teams->sortBy($scoringStrong)->map($nameOfTeam)->toArray();
+    $byKDK = array_flip($teams->sortBy($scoringKDK)->map($idOfTeam)->toArray());
+    $byStrong = array_flip($teams->sortBy($scoringStrong)->map($idOfTeam)->toArray());
+
+    $total = $teams->mapWithKeys(function(App\Team $team) use($byKDK, $byStrong) {
+        $kdkScore = $byKDK[$team->id];
+        $strongScore = $byStrong[$team->id];
+
+        return [$team->id => $kdkScore + $strongScore];
+    });
+    dd($byKDK, $byStrong, $total);
 
     return Response::json(['KDK' => $byKDK, 'Strong' => $byStrong]);
 });

@@ -12,10 +12,16 @@ npm run dev
 To setup the databse, run
 ```
 mysql -u root -p
+# create the database 
 >>> create databse laravel;
+# verify that the databse exists
 >>> show databases;
->>> exit
-php artisan migrate
+```
+Exit the mysql terminal and copy the `.env.example` file to `.env`, changing the databse settings according to your configuration. You should modify the keys `DB_DATABASE` to `laravel` and set the `DB_USERNAME` and `DB_PASSWORD` according to your mysql settings.
+
+Now prepare the Application key:
+```
+php artisan key:generate
 ```
 
 To start the application run
