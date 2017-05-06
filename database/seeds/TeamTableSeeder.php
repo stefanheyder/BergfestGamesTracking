@@ -13,6 +13,7 @@ class TeamTableSeeder extends Seeder
      */
     public function run()
     {
+        DB::table('teams')->delete();
         $teamsAsString = File::get(storage_path('data/teams'));
         foreach(explode("\n", $teamsAsString) as $team) {
             if (strlen($team) > 0) {
