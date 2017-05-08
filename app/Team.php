@@ -37,4 +37,9 @@ class Team extends Model
         });
         return $standardLifts->merge($executedLifts);
     }
+
+    public function total() {
+        $lifts = $this->lifts();
+        return $lifts->BechPress + $lifts->Deadlift + $lifts->Squat;
+    }
 }

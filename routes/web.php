@@ -12,7 +12,24 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('leaderboard');
+});
+
+Route::get('/teams', function(){
+    $teams = App\Team::all();
+    return Response::json($teams->map(function(App\Team $team){
+        return $team->name;
+    })->sortByDesc('total'));
+});
+
+Route::get('/lifts', function() {
+    $teams = App\Team::all();
+    return Response::json($teams->map(function(App\Team $team) {
+        return [
+            'name' => $team->name,
+            'lifts' => $team->lifts()
+        ];
+    }));
 });
 
 Route::get('kdk/{type}/{team_id}', function($type, $team_id) {
@@ -20,7 +37,7 @@ Route::get('kdk/{type}/{team_id}', function($type, $team_id) {
         return isStrongManLift($type) ? Redirect::to('strong/' . $type . '/' . $team_id) : Redirect::back();
     }
     if (!collect(['bp', 'dl', 'sq'])->contains($type)) {
-        return view('welcome');
+        return view('leaderboard');
     }
     $longType = liftTypeFromShort($type);
     return view('KDK', compact('type', 'team_id', 'longType'));
@@ -87,8 +104,8 @@ Route::put('strong/{type}/{team_id}', function($type, $team_id) {
     return Redirect::back();
 });
 
-Route::get('lifts/{team_id}', function($team_id) {
-    $team = App\Team::find($team_id);
+Route::get('lifts/{team}', function($team) {
+    $team = is_numeric($team) ? App\Team::find($team) : App\Team::where('name', '=', $team)->first();
     if (isset($team)) {
         return Response::json($team->lifts());
     }

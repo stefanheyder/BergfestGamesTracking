@@ -15,8 +15,4 @@ function updateTeams() {
     })
 }
 
-function scoring() {
-
-}
-
 window.setInterval(updateTeams, 1500);
