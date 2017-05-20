@@ -9,6 +9,7 @@ class Lift extends Model
     protected $fillable = [
         'amount',
         'Type',
-        'team_id'
+        'team_id',
+        'female'
     ];
 }

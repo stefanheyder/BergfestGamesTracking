@@ -1,15 +1,18 @@
 <template>
     <div :class="{maxLift: isMax}">
-        {{ amount }}
+        <div >{{ displayAmount }}</div>
     </div>
 </template>
 
 <script>
     export default {
-        props: ['amount', 'type', 'maxLifts'],
+        props: ['amount', 'type', 'maxLifts', 'female'],
         computed: {
             isMax() {
                 return this.amount === this.maxLifts[this.type];
+            },
+            displayAmount() {
+                return `${this.amount}${this.female ? '[f]' : ''}`;
             }
         }
     };
@@ -17,6 +20,7 @@
 
 <style>
     .maxLift {
-        background-color: deepskyblue;
+        font-size: 1.2em;
+        color: red;
     }
 </style>

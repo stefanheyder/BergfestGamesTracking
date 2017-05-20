@@ -31,6 +31,29 @@ Route::get('/lifts', function() {
         ];
     }));
 });
+Route::get('/femaleLifts', function() {
+    $teams = App\Team::all();
+    return Response::json($teams->map(function(App\Team $team) {
+        return [
+            'name' => $team->name,
+            'lifts' => App\Lift::where('team_id', $team->id)
+                ->where('female', true)
+                ->get()
+                ->pluck('Type')
+        ];
+    }));
+});
+
+Route::get('/timer', function() {
+    $timer = App\Timers::firstOrCreate(['shouldStart' => true]);
+    if ($timer->seconds == 0) {
+        $timer->seconds = 300;
+    }
+    $timer->shouldStart = false;
+    $timer->save();
+
+    return Response::json(['seconds' => 300]);
+});
 
 Route::get('kdk/{type}/{team_id}', function($type, $team_id) {
     if (!isKDKLift($type)){

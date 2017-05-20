@@ -1,13 +1,12 @@
 <template>
-    <div class="clockcase">
-        <span class="zero digit"></span>
-        <span :class="minutes"></span>
-
-        <span class="colon"></span>
-
-        <span :class="tenSeconds"></span>
-
-        <span :class="seconds"></span>
+    <div class="container-fluid">
+        <div class="clockcase">
+            <span class="zero digit"></span>
+            <span :class="minutes"></span>
+            <span class="colon"></span>
+            <span :class="tenSeconds"></span>
+            <span :class="seconds"></span>
+        </div>
     </div>
 </template>
 
@@ -15,17 +14,20 @@
     export default {
         data() {
             return {
-                remainingTime: 5 * 60
+                remainingTime: 0
             };
         },
         created() {
             let timer = setInterval(() => {
                 if (this.remainingTime === 0) {
                     clearInterval(timer);
+                    return;
                 }
                 this.remainingTime -= 1;
                 this.$forceUpdate();
             }, 1000);
+            axios.get('/timer')
+                .then(response => this.remainingTime = response.data.seconds);
         },
         computed: {
             tenMinutes() {
@@ -177,7 +179,7 @@
     }
 
     .six {
-        background-image: linear-gradient(90deg, transparent 10px, var(--back-color) 10px, var(--back-color) 50px, transparent 50px),
+        background-image: linear-gradient(90deg, transparent 10px, var(--main-color) 10px, var(--main-color) 50px, transparent 50px),
         linear-gradient(90deg, transparent 10px, var(--main-color) 10px, var(--main-color) 50px, transparent 50px),
         linear-gradient(90deg, transparent 10px, var(--main-color) 10px, var(--main-color) 50px, transparent 50px),
         linear-gradient(90deg, var(--main-color) 10px, transparent 10px, transparent 50px, var(--back-color) 50px),

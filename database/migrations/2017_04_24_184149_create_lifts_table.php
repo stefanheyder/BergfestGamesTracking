@@ -25,6 +25,7 @@ class CreateLiftsTable extends Migration
                 'TireFlip'
             ]);
             $table->integer('team_id');
+            $table->boolean('female')->default(false);
             $table->timestamps();
         });
     }
