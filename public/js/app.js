@@ -2002,14 +2002,31 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     created: function created() {
         var _this = this;
 
-        var timer = setInterval(function () {
+        var serverInterval = 0;
+        var timerInterval = 0;
+        var updateTimer = function updateTimer() {
+            return undefined;
+        };
+        var pollServer = function pollServer() {
+            axios.get('/timer').then(function (response) {
+                if (response.data.seconds > 0) {
+
+                    _this.remainingTime = response.data.seconds;
+                    clearInterval(timerInterval);
+                    timerInterval = setInterval(updateTimer, 1000);
+                }
+            });
+        };
+        updateTimer = function updateTimer() {
             if (_this.remainingTime === 0) {
-                clearInterval(timer);
+                clearInterval(timerInterval);
+                serverInterval = setInterval(pollServer, 1000);
                 return;
             }
             _this.remainingTime -= 1;
             _this.$forceUpdate();
-        }, 1000);
+        };
+        timerInterval = setInterval(updateTimer, 1000);
         axios.get('/timer').then(function (response) {
             return _this.remainingTime = response.data.seconds;
         });
@@ -2130,7 +2147,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 
-var femaleMultiplier = 2;
+var femaleMultiplier = 3;
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
@@ -2220,7 +2237,6 @@ var femaleMultiplier = 2;
             return this.sumLifts(this.strongLifts(team));
         }
     }
-
 });
 
 /***/ }),
@@ -2302,7 +2318,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(3)();
-exports.push([module.i, "\n:root{\n    --back-color:#333;\n    --main-color:lightblue;\n}\n.clockcase {\n    background-color: black;\n    margin: 100px auto;\n    text-align: center;\n}\n.digit, .colon {\n    position: relative;\n    display: inline-block;\n    width: 10px;\n    height: 110px;\n    margin: 5px;\n}\n.colon {\n    background: linear-gradient(-90deg, var(--back-color) 10px, transparent 10px),\n    linear-gradient(-90deg, var(--back-color) 10px, transparent 10px);\n    background-position: 0 40px, 0 65px;\n    background-repeat: no-repeat;\n    background-size: 10px 10px, 10px 10px;\n}\n.digit{\n    width:60px;\n\n    background-image: linear-gradient(90deg, transparent 10px, var(--back-color) 10px, #333 50px, transparent 50px),   /*  Top  */\n    linear-gradient(90deg, transparent 10px, var(--back-color) 10px, var(--back-color) 50px, transparent 50px),   /* Middle*/\n    linear-gradient(90deg, transparent 10px, var(--back-color) 10px, var(--back-color) 50px, transparent 50px),   /* Bottom*/\n\n    linear-gradient(90deg, var(--back-color) 10px, transparent 10px, transparent 50px, var(--back-color) 50px),   /* Topleft */\n    linear-gradient(90deg, var(--back-color) 10px, transparent 10px, transparent 50px, var(--back-color) 50px);   /* Bottomleft */\n\n    background-position: 0 0, 0 50px, 0 100px, 0 10px, 0 60px;\n    background-repeat:no-repeat;\n    background-size:60px 10px, 60px 10px, 60px 10px, 60px 40px, 60px 40px;\n}\n.zero {\n    background-image: linear-gradient(90deg, transparent 10px, var(--main-color) 10px, var(--main-color) 50px, transparent 50px),\n    linear-gradient(90deg, transparent 10px, var(--back-color) 10px, var(--back-color) 50px, transparent 50px),\n    linear-gradient(90deg, transparent 10px, var(--main-color) 10px, var(--main-color) 50px, transparent 50px),\n    linear-gradient(90deg, var(--main-color) 10px, transparent 10px, transparent 50px, var(--main-color) 50px),\n    linear-gradient(90deg, var(--main-color) 10px, transparent 10px, transparent 50px, var(--main-color) 50px);\n}\n.one {\n    background-image: linear-gradient(90deg, transparent 10px, var(--back-color) 10px, var(--back-color) 50px, transparent 50px),\n    linear-gradient(90deg, transparent 10px, var(--back-color) 10px, var(--back-color) 50px, transparent 50px),\n    linear-gradient(90deg, transparent 10px, var(--back-color) 10px, var(--back-color) 50px, transparent 50px),\n    linear-gradient(90deg, var(--back-color) 10px, transparent 10px, transparent 50px, var(--main-color) 50px),\n    linear-gradient(90deg, var(--back-color) 10px, transparent 10px, transparent 50px, var(--main-color) 50px);\n}\n.two {\n    background-image: linear-gradient(90deg, transparent 10px, var(--main-color) 10px, var(--main-color) 50px, transparent 50px),\n    linear-gradient(90deg, transparent 10px, var(--main-color) 10px, var(--main-color) 50px, transparent 50px),\n    linear-gradient(90deg, transparent 10px, var(--main-color) 10px, var(--main-color) 50px, transparent 50px),\n    linear-gradient(90deg, var(--back-color) 10px, transparent 10px, transparent 50px, var(--main-color) 50px),\n    linear-gradient(90deg, var(--main-color) 10px, transparent 10px, transparent 50px, var(--back-color) 50px);\n}\n.three {\n    background-image: linear-gradient(90deg, transparent 10px, var(--main-color) 10px, var(--main-color) 50px, transparent 50px),\n    linear-gradient(90deg, transparent 10px, var(--main-color) 10px, var(--main-color) 50px, transparent 50px),\n    linear-gradient(90deg, transparent 10px, var(--main-color) 10px, var(--main-color) 50px, transparent 50px),\n    linear-gradient(90deg, var(--back-color) 10px, transparent 10px, transparent 50px, var(--main-color) 50px),\n    linear-gradient(90deg, var(--back-color) 10px, transparent 10px, transparent 50px, var(--main-color) 50px);\n}\n.four {\n    background-image: linear-gradient(90deg, transparent 10px, var(--back-color) 10px, var(--back-color) 50px, transparent 50px),\n    linear-gradient(90deg, transparent 10px, var(--main-color) 10px, var(--main-color) 50px, transparent 50px),\n    linear-gradient(90deg, transparent 10px, var(--back-color) 10px, var(--back-color) 50px, transparent 50px),\n    linear-gradient(90deg, var(--main-color) 10px, transparent 10px, transparent 50px, var(--main-color) 50px),\n    linear-gradient(90deg, var(--back-color) 10px, transparent 10px, transparent 50px, var(--main-color) 50px);\n}\n.five {\n    background-image: linear-gradient(90deg, transparent 10px, var(--main-color) 10px, var(--main-color) 50px, transparent 50px),\n    linear-gradient(90deg, transparent 10px, var(--main-color) 10px, var(--main-color) 50px, transparent 50px),\n    linear-gradient(90deg, transparent 10px, var(--main-color) 10px, var(--main-color) 50px, transparent 50px),\n    linear-gradient(90deg, var(--main-color) 10px, transparent 10px, transparent 50px, var(--back-color) 50px),\n    linear-gradient(90deg, var(--back-color) 10px, transparent 10px, transparent 50px, var(--main-color) 50px);\n}\n.six {\n    background-image: linear-gradient(90deg, transparent 10px, var(--main-color) 10px, var(--main-color) 50px, transparent 50px),\n    linear-gradient(90deg, transparent 10px, var(--main-color) 10px, var(--main-color) 50px, transparent 50px),\n    linear-gradient(90deg, transparent 10px, var(--main-color) 10px, var(--main-color) 50px, transparent 50px),\n    linear-gradient(90deg, var(--main-color) 10px, transparent 10px, transparent 50px, var(--back-color) 50px),\n    linear-gradient(90deg, var(--main-color) 10px, transparent 10px, transparent 50px, var(--main-color) 50px);\n}\n.seven {\n    background-image: linear-gradient(90deg, transparent 10px, var(--main-color) 10px, var(--main-color) 50px, transparent 50px),\n    linear-gradient(90deg, transparent 10px, var(--back-color) 10px, var(--back-color) 50px, transparent 50px),\n    linear-gradient(90deg, transparent 10px, var(--back-color) 10px, var(--back-color) 50px, transparent 50px),\n    linear-gradient(90deg, var(--back-color) 10px, transparent 10px, transparent 50px, var(--main-color) 50px),\n    linear-gradient(90deg, var(--back-color) 10px, transparent 10px, transparent 50px, var(--main-color) 50px);\n}\n.eight {\n    background-image: linear-gradient(90deg, transparent 10px, var(--main-color) 10px, var(--main-color) 50px, transparent 50px),\n    linear-gradient(90deg, transparent 10px, var(--main-color) 10px, var(--main-color) 50px, transparent 50px),\n    linear-gradient(90deg, transparent 10px, var(--main-color) 10px, var(--main-color) 50px, transparent 50px),\n    linear-gradient(90deg, var(--main-color) 10px, transparent 10px, transparent 50px, var(--main-color) 50px),\n    linear-gradient(90deg, var(--main-color) 10px, transparent 10px, transparent 50px, var(--main-color) 50px);\n}\n.nine {\n    background-image: linear-gradient(90deg, transparent 10px, var(--main-color) 10px, var(--main-color) 50px, transparent 50px),\n    linear-gradient(90deg, transparent 10px, var(--main-color) 10px, var(--main-color) 50px, transparent 50px),\n    linear-gradient(90deg, transparent 10px, var(--main-color) 10px, var(--main-color) 50px, transparent 50px),\n    linear-gradient(90deg, var(--main-color) 10px, transparent 10px, transparent 50px, var(--main-color) 50px),\n    linear-gradient(90deg, var(--back-color) 10px, transparent 10px, transparent 50px, var(--main-color) 50px);\n}\n", ""]);
+exports.push([module.i, "\n:root{\n    --back-color:white;\n    --main-color:blue;\n}\n.clockcase {\n    margin: 100px auto;\n    text-align: center;\n}\n.digit, .colon {\n    position: relative;\n    display: inline-block;\n    width: 10px;\n    height: 110px;\n    margin: 5px;\n}\n.colon {\n    background: linear-gradient(-90deg, var(--main-color) 10px, transparent 10px),\n    linear-gradient(-90deg, var(--main-color) 10px, transparent 10px);\n    background-position: 0 40px, 0 65px;\n    background-repeat: no-repeat;\n    background-size: 10px 10px, 10px 10px;\n}\n.digit{\n    width:60px;\n\n    background-image: linear-gradient(90deg, transparent 10px, var(--back-color) 10px, #333 50px, transparent 50px),   /*  Top  */\n    linear-gradient(90deg, transparent 10px, var(--back-color) 10px, var(--back-color) 50px, transparent 50px),   /* Middle*/\n    linear-gradient(90deg, transparent 10px, var(--back-color) 10px, var(--back-color) 50px, transparent 50px),   /* Bottom*/\n\n    linear-gradient(90deg, var(--back-color) 10px, transparent 10px, transparent 50px, var(--back-color) 50px),   /* Topleft */\n    linear-gradient(90deg, var(--back-color) 10px, transparent 10px, transparent 50px, var(--back-color) 50px);   /* Bottomleft */\n\n    background-position: 0 0, 0 50px, 0 100px, 0 10px, 0 60px;\n    background-repeat:no-repeat;\n    background-size:60px 10px, 60px 10px, 60px 10px, 60px 40px, 60px 40px;\n}\n.zero {\n    background-image: linear-gradient(90deg, transparent 10px, var(--main-color) 10px, var(--main-color) 50px, transparent 50px),\n    linear-gradient(90deg, transparent 10px, var(--back-color) 10px, var(--back-color) 50px, transparent 50px),\n    linear-gradient(90deg, transparent 10px, var(--main-color) 10px, var(--main-color) 50px, transparent 50px),\n    linear-gradient(90deg, var(--main-color) 10px, transparent 10px, transparent 50px, var(--main-color) 50px),\n    linear-gradient(90deg, var(--main-color) 10px, transparent 10px, transparent 50px, var(--main-color) 50px);\n}\n.one {\n    background-image: linear-gradient(90deg, transparent 10px, var(--back-color) 10px, var(--back-color) 50px, transparent 50px),\n    linear-gradient(90deg, transparent 10px, var(--back-color) 10px, var(--back-color) 50px, transparent 50px),\n    linear-gradient(90deg, transparent 10px, var(--back-color) 10px, var(--back-color) 50px, transparent 50px),\n    linear-gradient(90deg, var(--back-color) 10px, transparent 10px, transparent 50px, var(--main-color) 50px),\n    linear-gradient(90deg, var(--back-color) 10px, transparent 10px, transparent 50px, var(--main-color) 50px);\n}\n.two {\n    background-image: linear-gradient(90deg, transparent 10px, var(--main-color) 10px, var(--main-color) 50px, transparent 50px),\n    linear-gradient(90deg, transparent 10px, var(--main-color) 10px, var(--main-color) 50px, transparent 50px),\n    linear-gradient(90deg, transparent 10px, var(--main-color) 10px, var(--main-color) 50px, transparent 50px),\n    linear-gradient(90deg, var(--back-color) 10px, transparent 10px, transparent 50px, var(--main-color) 50px),\n    linear-gradient(90deg, var(--main-color) 10px, transparent 10px, transparent 50px, var(--back-color) 50px);\n}\n.three {\n    background-image: linear-gradient(90deg, transparent 10px, var(--main-color) 10px, var(--main-color) 50px, transparent 50px),\n    linear-gradient(90deg, transparent 10px, var(--main-color) 10px, var(--main-color) 50px, transparent 50px),\n    linear-gradient(90deg, transparent 10px, var(--main-color) 10px, var(--main-color) 50px, transparent 50px),\n    linear-gradient(90deg, var(--back-color) 10px, transparent 10px, transparent 50px, var(--main-color) 50px),\n    linear-gradient(90deg, var(--back-color) 10px, transparent 10px, transparent 50px, var(--main-color) 50px);\n}\n.four {\n    background-image: linear-gradient(90deg, transparent 10px, var(--back-color) 10px, var(--back-color) 50px, transparent 50px),\n    linear-gradient(90deg, transparent 10px, var(--main-color) 10px, var(--main-color) 50px, transparent 50px),\n    linear-gradient(90deg, transparent 10px, var(--back-color) 10px, var(--back-color) 50px, transparent 50px),\n    linear-gradient(90deg, var(--main-color) 10px, transparent 10px, transparent 50px, var(--main-color) 50px),\n    linear-gradient(90deg, var(--back-color) 10px, transparent 10px, transparent 50px, var(--main-color) 50px);\n}\n.five {\n    background-image: linear-gradient(90deg, transparent 10px, var(--main-color) 10px, var(--main-color) 50px, transparent 50px),\n    linear-gradient(90deg, transparent 10px, var(--main-color) 10px, var(--main-color) 50px, transparent 50px),\n    linear-gradient(90deg, transparent 10px, var(--main-color) 10px, var(--main-color) 50px, transparent 50px),\n    linear-gradient(90deg, var(--main-color) 10px, transparent 10px, transparent 50px, var(--back-color) 50px),\n    linear-gradient(90deg, var(--back-color) 10px, transparent 10px, transparent 50px, var(--main-color) 50px);\n}\n.six {\n    background-image: linear-gradient(90deg, transparent 10px, var(--main-color) 10px, var(--main-color) 50px, transparent 50px),\n    linear-gradient(90deg, transparent 10px, var(--main-color) 10px, var(--main-color) 50px, transparent 50px),\n    linear-gradient(90deg, transparent 10px, var(--main-color) 10px, var(--main-color) 50px, transparent 50px),\n    linear-gradient(90deg, var(--main-color) 10px, transparent 10px, transparent 50px, var(--back-color) 50px),\n    linear-gradient(90deg, var(--main-color) 10px, transparent 10px, transparent 50px, var(--main-color) 50px);\n}\n.seven {\n    background-image: linear-gradient(90deg, transparent 10px, var(--main-color) 10px, var(--main-color) 50px, transparent 50px),\n    linear-gradient(90deg, transparent 10px, var(--back-color) 10px, var(--back-color) 50px, transparent 50px),\n    linear-gradient(90deg, transparent 10px, var(--back-color) 10px, var(--back-color) 50px, transparent 50px),\n    linear-gradient(90deg, var(--back-color) 10px, transparent 10px, transparent 50px, var(--main-color) 50px),\n    linear-gradient(90deg, var(--back-color) 10px, transparent 10px, transparent 50px, var(--main-color) 50px);\n}\n.eight {\n    background-image: linear-gradient(90deg, transparent 10px, var(--main-color) 10px, var(--main-color) 50px, transparent 50px),\n    linear-gradient(90deg, transparent 10px, var(--main-color) 10px, var(--main-color) 50px, transparent 50px),\n    linear-gradient(90deg, transparent 10px, var(--main-color) 10px, var(--main-color) 50px, transparent 50px),\n    linear-gradient(90deg, var(--main-color) 10px, transparent 10px, transparent 50px, var(--main-color) 50px),\n    linear-gradient(90deg, var(--main-color) 10px, transparent 10px, transparent 50px, var(--main-color) 50px);\n}\n.nine {\n    background-image: linear-gradient(90deg, transparent 10px, var(--main-color) 10px, var(--main-color) 50px, transparent 50px),\n    linear-gradient(90deg, transparent 10px, var(--main-color) 10px, var(--main-color) 50px, transparent 50px),\n    linear-gradient(90deg, transparent 10px, var(--main-color) 10px, var(--main-color) 50px, transparent 50px),\n    linear-gradient(90deg, var(--main-color) 10px, transparent 10px, transparent 50px, var(--main-color) 50px),\n    linear-gradient(90deg, var(--back-color) 10px, transparent 10px, transparent 50px, var(--main-color) 50px);\n}\n.lastSeconds {\n    -webkit-animation: pulsate 1s ease-out;\n    -webkit-animation-iteration-count: infinite;\n}\n@-webkit-keyframes pulsate {\n0% {-webkit-transform: scale(0.1, 0.1); opacity: 0.0;\n}\n50% {opacity: 1.0;\n}\n100% {-webkit-transform: scale(1.2, 1.2); opacity: 0.0;\n}\n}\n", ""]);
 
 /***/ }),
 /* 36 */
@@ -19638,10 +19654,6 @@ module.exports = Component.exports
 /* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
-
-/* styles */
-__webpack_require__(63)
-
 var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(32),
@@ -19754,7 +19766,7 @@ module.exports = Component.exports
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
-    staticClass: "container-fluid"
+    staticClass: "container"
   }, [_c('div', {
     staticClass: "row"
   }, [_c('table', {
@@ -19839,7 +19851,10 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   return _c('div', {
     staticClass: "container-fluid"
   }, [_c('div', {
-    staticClass: "clockcase"
+    staticClass: "clockcase",
+    class: {
+      lastSeconds: _vm.remainingTime < 5 && _vm.remainingTime > 0
+    }
   }, [_c('span', {
     staticClass: "zero digit"
   }), _vm._v(" "), _c('span', {
@@ -29394,46 +29409,6 @@ module.exports = function(module) {
 __webpack_require__(11);
 module.exports = __webpack_require__(12);
 
-
-/***/ }),
-/* 55 */,
-/* 56 */,
-/* 57 */,
-/* 58 */,
-/* 59 */,
-/* 60 */,
-/* 61 */,
-/* 62 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(3)();
-exports.push([module.i, "\ntable tr:nth-child(1) td {\n    background-color: gold;\n}\ntable tr:nth-child(2) td {\n    background-color: silver;\n}\ntable tr:nth-child(3) td {\n    background-color: #CD7F32;\n}\n", ""]);
-
-/***/ }),
-/* 63 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(62);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(4)("1f030e63", content, false);
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-11342876\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Leaderboard.vue", function() {
-     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-11342876\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Leaderboard.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
 
 /***/ })
 /******/ ]);

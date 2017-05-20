@@ -12,6 +12,6 @@ class TimersTableSeeder extends Seeder
     public function run()
     {
         DB::table('timers')->delete();
-        DB::table('timers') ->insert(['shouldStart' => true, 'seconds' => 300]);
+        DB::table('timers') ->insert(['shouldStart' => true, 'seconds' => 3 * 60]);
     }
 }

@@ -1,6 +1,6 @@
 <template>
     <div class="container-fluid">
-        <div class="clockcase">
+        <div class="clockcase" :class="{ lastSeconds: remainingTime < 5 && remainingTime > 0 }">
             <span class="zero digit"></span>
             <span :class="minutes"></span>
             <span class="colon"></span>
@@ -18,14 +18,30 @@
             };
         },
         created() {
-            let timer = setInterval(() => {
+            let serverInterval = 0;
+            let timerInterval = 0;
+            let updateTimer = () => undefined;
+            let pollServer = () => {
+                axios.get('/timer')
+                    .then(response => {
+                        if (response.data.seconds > 0) {
+
+                            this.remainingTime = response.data.seconds
+                            clearInterval(timerInterval);
+                            timerInterval = setInterval(updateTimer, 1000);
+                        }
+                    });
+            };
+            updateTimer = () => {
                 if (this.remainingTime === 0) {
-                    clearInterval(timer);
+                    clearInterval(timerInterval);
+                    serverInterval = setInterval(pollServer, 1000)
                     return;
                 }
                 this.remainingTime -= 1;
                 this.$forceUpdate();
-            }, 1000);
+            };
+            timerInterval = setInterval(updateTimer, 1000);
             axios.get('/timer')
                 .then(response => this.remainingTime = response.data.seconds);
         },
@@ -88,12 +104,11 @@
 <style lang="css">
 
     :root{
-        --back-color:#333;
-        --main-color:lightblue;
+        --back-color:white;
+        --main-color:blue;
     }
 
     .clockcase {
-        background-color: black;
         margin: 100px auto;
         text-align: center;
     }
@@ -107,8 +122,8 @@
     }
 
     .colon {
-        background: linear-gradient(-90deg, var(--back-color) 10px, transparent 10px),
-        linear-gradient(-90deg, var(--back-color) 10px, transparent 10px);
+        background: linear-gradient(-90deg, var(--main-color) 10px, transparent 10px),
+        linear-gradient(-90deg, var(--main-color) 10px, transparent 10px);
         background-position: 0 40px, 0 65px;
         background-repeat: no-repeat;
         background-size: 10px 10px, 10px 10px;
@@ -208,5 +223,14 @@
         linear-gradient(90deg, transparent 10px, var(--main-color) 10px, var(--main-color) 50px, transparent 50px),
         linear-gradient(90deg, var(--main-color) 10px, transparent 10px, transparent 50px, var(--main-color) 50px),
         linear-gradient(90deg, var(--back-color) 10px, transparent 10px, transparent 50px, var(--main-color) 50px);
+    }
+    .lastSeconds {
+        -webkit-animation: pulsate 1s ease-out;
+        -webkit-animation-iteration-count: infinite;
+    }
+    @-webkit-keyframes pulsate {
+        0% {-webkit-transform: scale(0.1, 0.1); opacity: 0.0;}
+        50% {opacity: 1.0;}
+        100% {-webkit-transform: scale(1.2, 1.2); opacity: 0.0;}
     }
 </style>

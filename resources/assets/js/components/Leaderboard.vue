@@ -1,5 +1,5 @@
 <template>
-    <div class="container-fluid">
+    <div class="container">
         <div class="row">
             <table class="table table-striped table-bordered">
                 <thead>
@@ -43,7 +43,7 @@
 </template>
 
 <script>
-    const femaleMultiplier = 2;
+    const femaleMultiplier = 3;
     export default {
         data() {
             return {
@@ -119,20 +119,6 @@
             strongTotal (team) {
                 return this.sumLifts(this.strongLifts(team));
             }
-
         }
-
     }
 </script>
-
-<style>
-    table tr:nth-child(1) td {
-        background-color: gold;
-    }
-    table tr:nth-child(2) td {
-        background-color: silver;
-    }
-    table tr:nth-child(3) td {
-        background-color: #CD7F32;
-    }
-</style>

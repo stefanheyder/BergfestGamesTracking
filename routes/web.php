@@ -45,14 +45,20 @@ Route::get('/femaleLifts', function() {
 });
 
 Route::get('/timer', function() {
-    $timer = App\Timers::firstOrCreate(['shouldStart' => true]);
-    if ($timer->seconds == 0) {
-        $timer->seconds = 300;
+    $timer = App\Timer::where(['shouldStart' => true])->first();
+    if (!isset($timer)) {
+        return Response::json(['seconds' => 0]);
     }
     $timer->shouldStart = false;
     $timer->save();
-
-    return Response::json(['seconds' => 300]);
+    return Response::json(['seconds' => $timer->seconds]);
+});
+Route::put('timer/create/{seconds}', function($seconds) {
+    App\Timer::create(["shouldStart" => true, "seconds" => $seconds]);
+    return Redirect::back();
+});
+Route::get('timer/controls', function() {
+    return view('TimerControls');
 });
 
 Route::get('kdk/{type}/{team_id}', function($type, $team_id) {
