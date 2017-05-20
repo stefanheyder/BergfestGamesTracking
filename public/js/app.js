@@ -2121,6 +2121,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 var femaleMultiplier = 2;
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2150,42 +2158,7 @@ var femaleMultiplier = 2;
 
     computed: {
         sortedTeams: function sortedTeams() {
-            var _this2 = this;
-
-            var strongRanking = _.orderBy(this.teams, this.strongTotal);
-
-            var kdkPoints = function kdkPoints(team) {
-                return _.findIndex(_this2.kdkRanking, team);
-            };
-            var strongPoints = function strongPoints(team) {
-                return _.findIndex(strongRanking, team);
-            };
-
-            _.orderBy(this.teams, this.kdkTotal, 'desc').forEach(function (team, index, array) {
-                team.kdkPoints = array.length - index;
-                if (index > 0) {
-                    var previous = array[index - 1];
-                    if (_this2.kdkTotal(team) === _this2.kdkTotal(previous)) {
-                        team.kdkPoints = previous.kdkPoints;
-                    }
-                }
-            });
-            _.orderBy(this.teams, this.strongTotal, 'desc').forEach(function (team, index, array) {
-                team.strongPoints = array.length - index;
-                if (index > 0) {
-                    var previous = array[index - 1];
-                    if (_this2.strongTotal(team) === _this2.strongTotal(previous)) {
-                        team.strongPoints = previous.strongPoints;
-                    }
-                }
-            });
-            var orderedTeams = _.orderBy(this.teams, function (team) {
-                return kdkPoints(team) + strongPoints(team);
-            }, 'desc');
-            return orderedTeams;
-        },
-        kdkRanking: function kdkRanking() {
-            return _.orderBy(this.teams, this.kdkTotal);
+            return _.orderBy(this.teams, this.totalPoints, 'desc');
         },
         maxLifts: function maxLifts() {
             return {
@@ -2210,14 +2183,21 @@ var femaleMultiplier = 2;
                 'kdk': _.max(this.teams.map(this.kdkTotal)),
                 'strong': _.max(this.teams.map(this.strongTotal))
             };
-        },
-        place: function place(team) {
-            return this.sortedTeams().map(function (team) {
-                return team;
-            });
         }
     },
     methods: {
+        strongPoints: function strongPoints(team) {
+            return this.teams.length - _.orderBy(this.teams.map(this.strongTotal), _.identity, 'desc').indexOf(this.strongTotal(team));
+        },
+        kdkPoints: function kdkPoints(team) {
+            return this.teams.length - _.orderBy(this.teams.map(this.kdkTotal), _.identity, 'desc').indexOf(this.kdkTotal(team));
+        },
+        totalPoints: function totalPoints(team) {
+            return this.strongPoints(team) + this.kdkPoints(team);
+        },
+        place: function place(team) {
+            return _.orderBy(this.teams.map(this.totalPoints), _.identity(), 'desc').indexOf(this.totalPoints(team)) + 1;
+        },
         sumLifts: function sumLifts(lifts) {
             return _.sum(_.values(lifts));
         },
@@ -2294,12 +2274,25 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ['name', 'lifts', 'kdkPoints', 'strongPoints', 'maxLifts', 'femaleLifts', 'kdkTotal', 'strongTotal', 'place'],
     computed: {
-        liftTypes: function liftTypes() {
-            return ['Squat', 'BenchPress', 'Deadlift', 'AtlasStone', 'FarmerWalk', 'TireFlip'];
+        kdkLifts: function kdkLifts() {
+            return ['Squat', 'BenchPress', 'Deadlift'];
+        },
+        strongLifts: function strongLifts() {
+            return ['AtlasStone', 'FarmerWalk', 'TireFlip'];
+        },
+        totalPoints: function totalPoints() {
+            return this.kdkPoints + this.strongPoints;
         }
     }
 });
@@ -19645,6 +19638,10 @@ module.exports = Component.exports
 /* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
+
+/* styles */
+__webpack_require__(63)
+
 var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(32),
@@ -19766,10 +19763,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     return _c('team-standings', {
       key: team.name,
       attrs: {
+        "place": _vm.place(team),
         "name": team.name,
         "lifts": team.lifts,
-        "kdkPoints": team.kdkPoints,
-        "strongPoints": team.strongPoints,
+        "kdkPoints": _vm.kdkPoints(team),
+        "strongPoints": _vm.strongPoints(team),
         "maxLifts": _vm.maxLifts,
         "femaleLifts": team.femaleLifts,
         "kdkTotal": _vm.kdkTotal(team),
@@ -19778,7 +19776,52 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     })
   }))])])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('thead', [_c('tr', [_c('td', [_vm._v(" Platz ")]), _vm._v(" "), _c('td', [_vm._v(" Name [Totale Punkte] ")]), _vm._v(" "), _c('td', [_vm._v(" Punkte KDK [Total KDK]")]), _vm._v(" "), _c('td', [_vm._v(" Punkte Strong [Total Strong]")]), _vm._v(" "), _c('td', [_vm._v(" Squat ")]), _vm._v(" "), _c('td', [_vm._v(" BenchPress ")]), _vm._v(" "), _c('td', [_vm._v(" Deadlift ")]), _vm._v(" "), _c('td', [_vm._v(" Atlas Stone ")]), _vm._v(" "), _c('td', [_vm._v(" Farmer Walk ")]), _vm._v(" "), _c('td', [_vm._v(" Tire Flip ")])])])
+  return _c('thead', [_c('tr', [_c('th', {
+    staticClass: "text-center",
+    attrs: {
+      "rowspan": "2"
+    }
+  }, [_vm._v(" Platz ")]), _vm._v(" "), _c('th', {
+    staticClass: "text-center",
+    attrs: {
+      "rowspan": "2"
+    }
+  }, [_vm._v(" Name ")]), _vm._v(" "), _c('th', {
+    staticClass: "text-center",
+    attrs: {
+      "rowspan": "2"
+    }
+  }, [_vm._v(" Punkte ")]), _vm._v(" "), _c('th', {
+    staticClass: "text-center",
+    attrs: {
+      "colspan": "5"
+    }
+  }, [_vm._v(" Kraftdreikampf ")]), _vm._v(" "), _c('th', {
+    staticClass: "text-center",
+    attrs: {
+      "colspan": "5"
+    }
+  }, [_vm._v(" Strongman ")])]), _vm._v(" "), _c('tr', [_c('th', {
+    staticClass: "text-center"
+  }, [_vm._v(" Squat ")]), _vm._v(" "), _c('th', {
+    staticClass: "text-center"
+  }, [_vm._v(" BenchPress ")]), _vm._v(" "), _c('th', {
+    staticClass: "text-center"
+  }, [_vm._v(" Deadlift ")]), _vm._v(" "), _c('th', {
+    staticClass: "text-center"
+  }, [_vm._v(" Total ")]), _vm._v(" "), _c('th', {
+    staticClass: "text-center"
+  }, [_vm._v(" Punkte")]), _vm._v(" "), _c('th', {
+    staticClass: "text-center"
+  }, [_vm._v(" Atlas Stone ")]), _vm._v(" "), _c('th', {
+    staticClass: "text-center"
+  }, [_vm._v(" Farmer Walk ")]), _vm._v(" "), _c('th', {
+    staticClass: "text-center"
+  }, [_vm._v(" Tire Flip ")]), _vm._v(" "), _c('th', {
+    staticClass: "text-center"
+  }, [_vm._v(" Total ")]), _vm._v(" "), _c('th', {
+    staticClass: "text-center"
+  }, [_vm._v(" Punkte ")])])])
 }]}
 module.exports.render._withStripped = true
 if (false) {
@@ -19841,15 +19884,7 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('tr', [_c('td', [_vm._v(" " + _vm._s(_vm.place) + " ")]), _vm._v(" "), _c('td', [_vm._v("\n        " + _vm._s(_vm.name) + " [" + _vm._s(_vm.kdkPoints + _vm.strongPoints) + "]\n    ")]), _vm._v(" "), _c('td', {
-    class: {
-      maxLift: _vm.kdkTotal === _vm.maxLifts.kdk
-    }
-  }, [_vm._v(" " + _vm._s(_vm.kdkPoints) + " [" + _vm._s(_vm.kdkTotal) + "]")]), _vm._v(" "), _c('td', {
-    class: {
-      maxLift: _vm.strongTotal === _vm.maxLifts.strong
-    }
-  }, [_vm._v(" " + _vm._s(_vm.strongPoints) + " [" + _vm._s(_vm.strongTotal) + "] ")]), _vm._v(" "), _vm._l((_vm.liftTypes), function(lift) {
+  return _c('tr', [_c('td', [_vm._v(" " + _vm._s(_vm.place) + " ")]), _vm._v(" "), _c('td', [_vm._v(" " + _vm._s(_vm.name) + " ")]), _vm._v(" "), _c('td', [_vm._v(" " + _vm._s(_vm.totalPoints))]), _vm._v(" "), _vm._l((_vm.kdkLifts), function(lift) {
     return _c('td', [_c('lift', {
       attrs: {
         "maxLifts": _vm.maxLifts,
@@ -19858,7 +19893,24 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "female": _vm.femaleLifts && _vm.femaleLifts.indexOf(lift) !== -1
       }
     })], 1)
-  })], 2)
+  }), _vm._v(" "), _c('td', {
+    class: {
+      maxLift: _vm.kdkTotal === _vm.maxLifts.kdk
+    }
+  }, [_vm._v(" " + _vm._s(_vm.kdkTotal))]), _vm._v(" "), _c('td', [_vm._v(" " + _vm._s(_vm.kdkPoints))]), _vm._v(" "), _vm._l((_vm.strongLifts), function(lift) {
+    return _c('td', [_c('lift', {
+      attrs: {
+        "maxLifts": _vm.maxLifts,
+        "amount": _vm.lifts[lift],
+        "type": lift,
+        "female": _vm.femaleLifts && _vm.femaleLifts.indexOf(lift) !== -1
+      }
+    })], 1)
+  }), _vm._v(" "), _c('td', {
+    class: {
+      maxLift: _vm.strongTotal === _vm.maxLifts.strong
+    }
+  }, [_vm._v(" " + _vm._s(_vm.strongTotal))]), _vm._v(" "), _c('td', [_vm._v(" " + _vm._s(_vm.strongPoints))])], 2)
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
@@ -29342,6 +29394,46 @@ module.exports = function(module) {
 __webpack_require__(11);
 module.exports = __webpack_require__(12);
 
+
+/***/ }),
+/* 55 */,
+/* 56 */,
+/* 57 */,
+/* 58 */,
+/* 59 */,
+/* 60 */,
+/* 61 */,
+/* 62 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(3)();
+exports.push([module.i, "\ntable tr:nth-child(1) td {\n    background-color: gold;\n}\ntable tr:nth-child(2) td {\n    background-color: silver;\n}\ntable tr:nth-child(3) td {\n    background-color: #CD7F32;\n}\n", ""]);
+
+/***/ }),
+/* 63 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(62);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(4)("1f030e63", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-11342876\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Leaderboard.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-11342876\",\"scoped\":false,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Leaderboard.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
 
 /***/ })
 /******/ ]);

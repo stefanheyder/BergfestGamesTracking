@@ -4,25 +4,33 @@
             <table class="table table-striped table-bordered">
                 <thead>
                     <tr>
-                        <td> Platz </td>
-                        <td> Name [Totale Punkte] </td>
-                        <td> Punkte KDK [Total KDK]</td>
-                        <td> Punkte Strong [Total Strong]</td>
-                        <td> Squat </td>
-                        <td> BenchPress </td>
-                        <td> Deadlift </td>
-                        <td> Atlas Stone </td>
-                        <td> Farmer Walk </td>
-                        <td> Tire Flip </td>
+                        <th rowspan="2" class="text-center"> Platz </th>
+                        <th rowspan="2" class="text-center"> Name </th>
+                        <th rowspan="2" class="text-center"> Punkte </th>
+                        <th colspan="5" class="text-center"> Kraftdreikampf </th>
+                        <th colspan="5" class="text-center"> Strongman </th>
+                    </tr>
+                    <tr>
+                        <th class="text-center"> Squat </th>
+                        <th class="text-center"> BenchPress </th>
+                        <th class="text-center"> Deadlift </th>
+                        <th class="text-center"> Total </th>
+                        <th class="text-center"> Punkte</th>
+                        <th class="text-center"> Atlas Stone </th>
+                        <th class="text-center"> Farmer Walk </th>
+                        <th class="text-center"> Tire Flip </th>
+                        <th class="text-center"> Total </th>
+                        <th class="text-center"> Punkte </th>
                     </tr>
                 </thead>
                 <tbody>
                     <team-standings v-for="team in sortedTeams"
                                     :key="team.name"
+                                    :place="place(team)"
                                     :name="team.name"
                                     :lifts="team.lifts"
-                                    :kdkPoints="team.kdkPoints"
-                                    :strongPoints="team.strongPoints"
+                                    :kdkPoints="kdkPoints(team)"
+                                    :strongPoints="strongPoints(team)"
                                     :maxLifts="maxLifts"
                                     :femaleLifts="team.femaleLifts"
                                     :kdkTotal="kdkTotal(team)"
@@ -61,34 +69,7 @@
         },
         computed: {
             sortedTeams() {
-                let strongRanking = _.orderBy(this.teams, this.strongTotal);
-
-                let kdkPoints = team => _.findIndex(this.kdkRanking, team);
-                let strongPoints = team => _.findIndex(strongRanking, team);
-
-                _.orderBy(this.teams, this.kdkTotal, 'desc').forEach((team, index, array) => {
-                    team.kdkPoints = array.length - index;
-                    if (index > 0) {
-                        let previous = array[index - 1];
-                        if (this.kdkTotal(team) === this.kdkTotal(previous)) {
-                            team.kdkPoints = previous.kdkPoints;
-                        }
-                    }
-                })
-                _.orderBy(this.teams, this.strongTotal, 'desc').forEach((team, index, array) => {
-                    team.strongPoints = array.length - index;
-                    if (index > 0) {
-                        let previous = array[index - 1];
-                        if (this.strongTotal(team) === this.strongTotal(previous)) {
-                            team.strongPoints = previous.strongPoints;
-                        }
-                    }
-                })
-                let orderedTeams = _.orderBy(this.teams, team => kdkPoints(team) + strongPoints(team), 'desc');
-                return orderedTeams;
-            },
-            kdkRanking() {
-                return _.orderBy(this.teams, this.kdkTotal);
+                return _.orderBy(this.teams, this.totalPoints, 'desc');
             },
             maxLifts() {
                 return {
@@ -102,11 +83,21 @@
                     'strong': _.max(this.teams.map(this.strongTotal))
                 }
             },
-            place(team) {
-                return this.sortedTeams().map(team => team);
-            }
         },
         methods: {
+            strongPoints(team) {
+                return this.teams.length - _.orderBy(this.teams.map(this.strongTotal), _.identity, 'desc').indexOf(this.strongTotal(team));
+            },
+            kdkPoints(team) {
+                return this.teams.length - _.orderBy(this.teams.map(this.kdkTotal), _.identity, 'desc').indexOf(this.kdkTotal(team));
+            },
+            totalPoints(team) {
+                return this.strongPoints(team) + this.kdkPoints(team);
+            },
+            place(team) {
+                return _.orderBy(this.teams.map(this.totalPoints), _.identity(), 'desc')
+                        .indexOf(this.totalPoints(team)) + 1 ;
+            },
             sumLifts (lifts) {
                 return _.sum(_.values(lifts));
             },
@@ -133,3 +124,15 @@
 
     }
 </script>
+
+<style>
+    table tr:nth-child(1) td {
+        background-color: gold;
+    }
+    table tr:nth-child(2) td {
+        background-color: silver;
+    }
+    table tr:nth-child(3) td {
+        background-color: #CD7F32;
+    }
+</style>
