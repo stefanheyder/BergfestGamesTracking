@@ -1,5 +1,5 @@
 <template>
-    <div class="container-fluid">
+    <div class="row">
         <div class="clockcase" :class="{ lastSeconds: remainingTime < 5 && remainingTime > 0 }">
             <span class="zero digit"></span>
             <span :class="minutes"></span>
@@ -105,11 +105,11 @@
 
     :root{
         --back-color:white;
-        --main-color:blue;
+        --main-color:red;
     }
 
     .clockcase {
-        margin: 100px auto;
+        margin: 5 auto;
         text-align: center;
     }
 

@@ -11,6 +11,11 @@
 |
 */
 
+
+Route::get('/overview', function() {
+    return view('Overview');
+});
+
 Route::get('/', function () {
     return view('leaderboard');
 });
@@ -38,6 +43,7 @@ Route::get('/femaleLifts', function() {
             'name' => $team->name,
             'lifts' => App\Lift::where('team_id', $team->id)
                 ->where('female', true)
+                ->whereIn('Type', ['Squat', 'Deadlift', 'BenchPress'])
                 ->get()
                 ->pluck('Type')
         ];
@@ -54,6 +60,11 @@ Route::get('/timer', function() {
     return Response::json(['seconds' => $timer->seconds]);
 });
 Route::put('timer/create/{seconds}', function($seconds) {
+    // kdk timer
+    App\Timer::create(["shouldStart" => true, "seconds" => $seconds]);
+    // rest timer between sets
+    App\Timer::create(["shouldStart" => true, "seconds" => 30]);
+    // strongman timer
     App\Timer::create(["shouldStart" => true, "seconds" => $seconds]);
     return Redirect::back();
 });

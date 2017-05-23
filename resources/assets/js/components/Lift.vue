@@ -1,6 +1,6 @@
 <template>
-    <div :class="{maxLift: isMax}">
-        <div >{{ displayAmount }}</div>
+    <div >
+        <div :class="{femaleLift: female}">{{ displayAmount }}</div>
     </div>
 </template>
 
@@ -12,7 +12,7 @@
                 return this.amount === this.maxLifts[this.type];
             },
             displayAmount() {
-                return `${this.amount}${this.female ? '[f]' : ''}`;
+                return `${this.amount}${this.female ? '(x3)' : ''}`;
             }
         }
     };
@@ -22,5 +22,9 @@
     .maxLift {
         font-size: 1.2em;
         color: red;
+    }
+    .femaleLift {
+        background-color: rgba(80,130,200, 0.5);
+        border-radius: 8px;
     }
 </style>

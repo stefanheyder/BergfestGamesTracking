@@ -1,26 +1,26 @@
 <template>
     <tr>
-        <td> {{ place }} </td>
-        <td> {{ name }} </td>
-        <td> {{ totalPoints }}</td>
-        <td v-for="lift in kdkLifts">
+        <td class="divide-table event"> {{ place }} </td>
+        <td class="event"> {{ name }} </td>
+        <td class="divide-table event"> {{ totalPoints }}</td>
+        <td v-for="lift in kdkLifts" class="kraftdreikampf">
             <lift :maxLifts="maxLifts"
                   :amount="lifts[lift]"
                   :type="lift"
                   :female="femaleLifts && femaleLifts.indexOf(lift) !== -1"
             />
         </td>
-        <td :class="{maxLift : kdkTotal === maxLifts.kdk}"> {{kdkTotal}}</td>
-        <td> {{ kdkPoints }}</td>
-        <td v-for="lift in strongLifts">
+        <td :class="{best : kdkTotal === maxLifts.kdk[0], second: kdkTotal === maxLifts.kdk[1], third: kdkTotal === maxLifts.kdk[2]}" class="kraftdreikampf"> {{kdkTotal}}</td>
+        <td class="divide-table kraftdreikampf"> {{ kdkPoints }}</td>
+        <td v-for="lift in strongLifts" class="strongman">
             <lift :maxLifts="maxLifts"
                   :amount="lifts[lift]"
                   :type="lift"
                   :female="femaleLifts && femaleLifts.indexOf(lift) !== -1"
             />
         </td>
-        <td :class="{maxLift : strongTotal === maxLifts.strong}"> {{strongTotal}}</td>
-        <td> {{ strongPoints }}</td>
+        <td :class="{best : strongTotal === maxLifts.strong[0], second: strongTotal === maxLifts.strong[1], third: strongTotal === maxLifts.strong[2]}" class="strongman"> {{strongTotal}}</td>
+        <td class="strongman"> {{ strongPoints }}</td>
     </tr>
 
 </template>
@@ -43,8 +43,16 @@
 </script>
 
 <style>
-    .maxLift {
-        font-size: 1.2em;
-        color: red;
+    .best {
+        color: darkgreen;
+    }
+    .second {
+        color: forestgreen;
+    }
+    .third {
+        color: lightgreen;
+    }
+    .divide-table {
+        border-right: solid 1px;
     }
 </style>

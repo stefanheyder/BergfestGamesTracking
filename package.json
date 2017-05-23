@@ -20,7 +20,11 @@
   },
   "dependencies": {
     "bootswatch": "^3.3.7",
+    "fs": "0.0.1-security",
     "lodash": "^4.17.4",
+    "net": "^1.0.2",
+    "nosleep": "^2.0.0",
+    "tls": "0.0.1",
     "vue-async-computed": "^3.1.2"
   }
 }
