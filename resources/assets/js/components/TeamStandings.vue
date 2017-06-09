@@ -44,13 +44,13 @@
 
 <style>
     .best {
-        color: darkgreen;
+        color: #324F17;
     }
     .second {
-        color: forestgreen;
+        color: #3E5726;
     }
     .third {
-        color: lightgreen;
+        color: #4A5B3A;
     }
     .divide-table {
         border-right: solid 1px;

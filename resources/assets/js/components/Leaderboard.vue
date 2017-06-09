@@ -115,12 +115,12 @@
 
 <style>
     .event {
-        background-color: lightpink;
+        background-color: #d8d8d8;
     }
     .kraftdreikampf {
-        background-color: lightgrey;
+        background-color: #d0d0d0;
     }
     .strongman {
-        background-color: lightcyan;
+        background-color: #d8d8d8;
     }
 </style>
