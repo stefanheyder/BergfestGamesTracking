@@ -18,6 +18,9 @@
         <input type="text" placeholder="{{$longType}}" name="amount">
         <button type="submit"> Submit</button>
     {{Form::close()}}
+    @foreach(\App\Utilities::$strongmanLifts as $strong)
+        <a href="/strong/{{\App\Utilities::shortFromLiftType($strong)}}/{{$team_id}}" class="btn btn-default"> {{ $strong }}</a>
+    @endforeach
 </body>
 </html>
 

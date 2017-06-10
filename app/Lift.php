@@ -10,6 +10,7 @@ class Lift extends Model
         'amount',
         'Type',
         'team_id',
-        'female'
+        'female',
+        'previous_amount'
     ];
 }

@@ -1,8 +1,3 @@
-
-// Fonts
-@import url(https://fonts.googleapis.com/css?family=Raleway:300,400,600);
-
-// Variables
 @import "variables";
 
 // Bootstrap
@@ -42,3 +37,13 @@
 .fade-enter, .fade-leave-to /* .fade-leave-active in <2.1.8 */ {
   opacity: 0
 }
+
+.btn-xlarge {
+	padding: 18px 28px;
+	font-size: 90px; //change this to your desired size
+	line-height: normal;
+	-webkit-border-radius: 8px;
+	-moz-border-radius: 8px;
+	border-radius: 8px;
+}
+

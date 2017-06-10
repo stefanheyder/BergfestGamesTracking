@@ -16,4 +16,5 @@ mix.js('resources/assets/js/app.js', 'public/js')
 		'resources/assets/js/updateTeams.js',
 		'node_modules/jquery/dist/jquery.js'
 	], 'public/js/scripts.js')
-   .sass('resources/assets/sass/app.scss', 'public/css');
+   .sass('resources/assets/sass/app.scss', 'public/css')
+	.version();

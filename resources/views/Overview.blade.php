@@ -15,29 +15,11 @@
 </head>
 <body>
 <div class="container">
-    <ul class="nav nav-tabs">
-        @foreach(App\Team::all() as $team)
-            <li class="{{$loop->first ? "active" : ""}}" data-toggle="tab">
-                <a href="#team{{$team->id}}">
-                    {{$team->name}}
-                </a>
-            </li>
-        @endforeach
-    </ul>
-    <div class="tab-content">
-        @foreach(App\Team::all() as $team)
-            <div id="team{{$team->id}}" class="tab-pane fade {{$loop->first ? "active" : ""}}">
-                <div class="row ">
-                    Lifts
-                </div>
-                <div class="row">
-                    <div class="col">
-                        Squat : {{$team->lifts()["Squat"]}}
-                    </div>
-                </div>
-            </div>
-        @endforeach
-    </div>
+    @foreach(App\Team::all() as $team)
+        <div class="panel panel-default">
+            @include("TeamLift", ["team" => $team, "lifts" => $team->lifts()])
+        </div>
+    @endforeach
 </div>
 </body>
 </html>

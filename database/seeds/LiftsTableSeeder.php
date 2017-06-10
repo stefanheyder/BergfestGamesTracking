@@ -40,10 +40,12 @@ class LiftsTableSeeder extends Seeder
                         collect($this->getLiftsOfLifter($number))
                             ->map(function($lift) use ($team, $liftRanges, $isFemale, $faker) {
                                 $range = $liftRanges[$isFemale ? "female" : "male"][$lift];
+                                $amount = $faker->numberBetween($range["min"], $range["max"]);
                                 return [
                                     'Type'      => $lift,
                                     'team_id'   => $team->id,
-                                    'amount'    => $faker->numberBetween($range["min"], $range["max"]),
+                                    'amount'    => $amount,
+                                    'previous_amount'    => $amount - 5,
                                     'female'    => $isFemale
                                 ];
                             })
