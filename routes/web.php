@@ -12,6 +12,8 @@
 */
 
 
+use Illuminate\Support\Facades\Input;
+
 Route::get('/overview', function() {
     return view('Overview');
 });
@@ -97,6 +99,7 @@ Route::put("lift/{liftName}/{team_id}", function($liftName, $team_id) {
     if ($team) {
         $lift = $team->lift($liftName);
         $lift->previous_amount = $lift->amount;
+        $lift->female = Request::input('female') !== null;
         $lift->amount = Request::input('amount');
         $lift->save();
     }

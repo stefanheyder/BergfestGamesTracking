@@ -64,7 +64,7 @@
                     });
             }
             updateTeams();
-            setInterval(updateTeams, 10000);
+            setInterval(updateTeams, 1000);
         },
         computed: {
             sortedTeams() {

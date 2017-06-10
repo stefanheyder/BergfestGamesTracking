@@ -16,6 +16,11 @@
     @php($isKDK = App\Utilities::isKDKLift($liftName))
     @php($lift = App\Team::find($team_id)->lift($liftName))
     <div class="container">
+        <div class="row">
+            <div class="col-xs-12" style="text-align: center; font-size: 20px;">
+                <b>{{ $liftName }} -- {{ App\Team::find($team_id)->name }} </b>
+            </div>
+        </div>
         <div class="row ">
             @if(! $isKDK)
                 <div class="col-xs-12" style="font-size:150px;text-align:center">{{$lift->amount}}</div>
@@ -24,7 +29,15 @@
         <div class="row ">
             {{ Form::open(['url' => 'lift/' . $liftName . '/' . $team_id, 'method' => 'PUT', "class" => "col-xs-12"]) }}
                 {{ Form::input($isKDK ? "text" : "hidden", 'amount', $isKDK ? $lift->amount : $lift->amount + 1, [ "style" => "font-size:120px;text-align:center;border-radius:10px", "class" => "col-xs-12"])}}
-                {{ Form::submit($isKDK? "Update " . $liftName : "+1 " . $liftName, ["class" => "btn btn-primary col-xs-12", "style" => "font-size:80px;white-space:normal"] ) }}
+                @if($isKDK)
+                    <div class="col-xs-12" style="font-size:50px; text-align:center">
+                        <label>
+                            <input type="checkbox" name="female" id="female"  style="width:40px;height:40px" {{ $lift->female ? "checked" : "" }}>
+                            Weiblich
+                        </label>
+                    </div>
+                @endif
+                {{ Form::submit($isKDK? "Update" : "+1 " , ["class" => "btn btn-primary col-xs-12", "style" => "font-size:80px;white-space:normal"] ) }}
             {{ Form::close() }}
         </div>
         <div class="row" >
@@ -45,7 +58,7 @@
         <div class="row">
             <div class="btn-group col-xs-12">
                 @foreach($nextLifts as $nextLift)
-                    <a href="/lift/{{ $nextLift }}/{{$team_id}}" class="btn btn-default col-md-4 col-xs-12" style="font-size:50px"> {{ $nextLift }}</a>
+                    <a href="/lift/{{ $nextLift }}/{{$team_id}}" class="btn btn-default col-md-4 col-xs-12" style="font-size:50px"> {{ \App\Utilities::readableName($nextLift) }}</a>
                 @endforeach
             </div>
         </div>

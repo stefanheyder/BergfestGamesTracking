@@ -2170,7 +2170,7 @@ var femaleMultiplier = 3;
             });
         };
         updateTeams();
-        setInterval(updateTeams, 10000);
+        setInterval(updateTeams, 1000);
     },
 
     computed: {
