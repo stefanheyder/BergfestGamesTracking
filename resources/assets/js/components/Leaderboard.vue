@@ -104,7 +104,7 @@
                 return this.sumLifts(this.kdkLifts(team));
             },
             strongLifts (team) {
-                return _.pick(team.lifts, ['AtlasStone', 'TireFlip', 'FarmerWalk']);
+                return _.pick(team.lifts, ['Burpee', 'TireFlip', 'FarmerWalk']);
             },
             strongTotal (team) {
                 return this.sumLifts(this.strongLifts(team));

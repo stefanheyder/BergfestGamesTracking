@@ -80,35 +80,6 @@ Route::get('lifts/{team}', function($team) {
     return Response::json(null);
 });
 
-Route::get('scores', function() {
-    $teams = App\Team::all();
-    $scoringKDK = function(App\Team $team) {
-        $lifts = $team->lifts();
-        return $lifts['BenchPress'] + $lifts['Squat'] + $lifts['Deadlift'];
-    };
-
-    $scoringStrong = function(App\Team $team) {
-        $lifts = $team->lifts();
-        return $lifts['AtlasStone'] + $lifts['TireFlip'] + $lifts['FarmerWalk'];
-    };
-
-    $idOfTeam = function ($team) {
-        return $team->id;
-    };
-    $byKDK = array_flip($teams->sortBy($scoringKDK)->map($idOfTeam)->toArray());
-    $byStrong = array_flip($teams->sortBy($scoringStrong)->map($idOfTeam)->toArray());
-
-    $total = $teams->mapWithKeys(function(App\Team $team) use($byKDK, $byStrong) {
-        $kdkScore = $byKDK[$team->id];
-        $strongScore = $byStrong[$team->id];
-
-        return [$team->id => $kdkScore + $strongScore];
-    });
-    dd($byKDK, $byStrong, $total);
-
-    return Response::json(['KDK' => $byKDK, 'Strong' => $byStrong]);
-});
-
 Route::get('lifts/{team}', function($team) {
     $team = is_numeric($team) ? App\Team::find($team) : App\Team::where('name', '=', $team)->first();
     if (isset($team)) {

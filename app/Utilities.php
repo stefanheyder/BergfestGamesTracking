@@ -4,14 +4,14 @@ namespace App;
 class Utilities
 {
 
-    public static $strongmanLifts = ["AtlasStone", "TireFlip", "FarmerWalk"];
+    public static $strongmanLifts = ["Burpee", "TireFlip", "FarmerWalk"];
     public static $kdkLifts = ["Squat", "BenchPress", "Deadlift"];
 
     public static $shortToLong = [
         "bp" => "BenchPress",
         "sq" => "Squat",
         "dl" => "Deadlift",
-        "as" => "AtlasStone",
+        "as" => "Burpee",
         "fw" => "FarmerWalk",
         "tf" => "TireFlip",
     ];
@@ -20,7 +20,7 @@ class Utilities
         "BenchPress" => "bp",
         "Squat" => "sq",
         "Deadlift" => "dl",
-        "AtlasStone" => "as",
+        "Burpee" => "as",
         "FarmerWalk" => "fw",
         "TireFlip" => "tf",
     ];
@@ -34,7 +34,7 @@ class Utilities
     }
 
     public static function isStrongManLift($type) {
-        return collect(['as', 'fw', 'tf', "AtlasStone", "FarmerWalk", "TireFlip"])->contains($type);
+        return collect(['as', 'fw', 'tf', "Burpee", "FarmerWalk", "TireFlip"])->contains($type);
     }
 
     public static function isKDKLift($type) {

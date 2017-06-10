@@ -33,7 +33,7 @@
                 return ['Squat', 'BenchPress', 'Deadlift'];
             },
             strongLifts() {
-                return ['AtlasStone', 'FarmerWalk', 'TireFlip'];
+                return ['Burpee', 'FarmerWalk', 'TireFlip'];
             },
             totalPoints() {
                 return this.kdkPoints + this.strongPoints;

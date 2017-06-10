@@ -28,7 +28,7 @@ class Team extends Model
             'BenchPress' => 0,
             'Deadlift' => 0,
             'Squat' => 0,
-            'AtlasStone' => 0,
+            'Burpee' => 0,
             'FarmerWalk' => 0,
             'TireFlip' => 0,
         ]);

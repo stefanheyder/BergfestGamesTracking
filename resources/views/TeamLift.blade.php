@@ -5,7 +5,7 @@
 </div>
 <div class="panel-body container">
     <div class="row">
-        @foreach (["Squat", "BenchPress", "Deadlift", "AtlasStone", "FarmerWalk", "TireFlip"] as $lift)
+        @foreach (["Squat", "BenchPress", "Deadlift", "Burpee", "FarmerWalk", "TireFlip"] as $lift)
             <div class="col-md-2 col-xs-6">
                 <div class="row">
                     <div class="col-xs-12 text-center" style="font-size:25px">

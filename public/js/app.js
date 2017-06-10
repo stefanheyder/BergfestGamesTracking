@@ -2210,7 +2210,7 @@ var femaleMultiplier = 3;
             return this.sumLifts(this.kdkLifts(team));
         },
         strongLifts: function strongLifts(team) {
-            return _.pick(team.lifts, ['AtlasStone', 'TireFlip', 'FarmerWalk']);
+            return _.pick(team.lifts, ['Burpee', 'TireFlip', 'FarmerWalk']);
         },
         strongTotal: function strongTotal(team) {
             return this.sumLifts(this.strongLifts(team));
@@ -2284,7 +2284,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             return ['Squat', 'BenchPress', 'Deadlift'];
         },
         strongLifts: function strongLifts() {
-            return ['AtlasStone', 'FarmerWalk', 'TireFlip'];
+            return ['Burpee', 'FarmerWalk', 'TireFlip'];
         },
         totalPoints: function totalPoints() {
             return this.kdkPoints + this.strongPoints;

@@ -16,7 +16,7 @@ class LiftsTableSeeder extends Seeder
                 "BenchPress"    => ["min" => 50, "max" => 120],
                 "Squat"         => ["min" => 120, "max" => 200],
                 "Deadlift"      => ["min" => 140, "max" => 250],
-                "AtlasStone"    => ["min" => 10, "max" => 30],
+                "Burpee"    => ["min" => 10, "max" => 30],
                 "TireFlip"      => ["min" => 20, "max" => 40],
                 "FarmerWalk"    => ["min" => 5, "max" => 20]
             ],
@@ -24,7 +24,7 @@ class LiftsTableSeeder extends Seeder
                 "BenchPress"    => ["min" => 25, "max" => 60],
                 "Squat"         => ["min" => 40, "max" => 70],
                 "Deadlift"      => ["min" => 50, "max" => 100],
-                "AtlasStone"    => ["min" => 10, "max" => 30],
+                "Burpee"    => ["min" => 10, "max" => 30],
                 "TireFlip"      => ["min" => 20, "max" => 40],
                 "FarmerWalk"    => ["min" => 5, "max" => 20]
             ]
@@ -59,7 +59,7 @@ class LiftsTableSeeder extends Seeder
     public function getLiftsOfLifter($lifterNumber) {
         switch ($lifterNumber) {
             case 1 :
-                return ["BenchPress", "AtlasStone"];
+                return ["BenchPress", "Burpee"];
             case 2:
                 return ["Squat", "TireFlip"];
             case 3:
