@@ -1,11 +1,13 @@
 <template>
     <div class="row">
-        <div class="clockcase" :class="{ lastSeconds: remainingTime < 5 && remainingTime > 0 }">
-            <span class="zero digit"></span>
-            <span :class="minutes"></span>
-            <span class="colon"></span>
-            <span :class="tenSeconds"></span>
-            <span :class="seconds"></span>
+        <div class="clockcase" >
+            <div :class="{ lastSeconds: remainingTime < 5 && remainingTime > 0 }">
+                <span class="zero digit"></span>
+                <span :class="minutes"></span>
+                <span class="colon"></span>
+                <span :class="tenSeconds"></span>
+                <span :class="seconds"></span>
+            </div>
         </div>
     </div>
 </template>
@@ -14,7 +16,8 @@
     export default {
         data() {
             return {
-                remainingTime: 0
+                remainingTime: 0,
+                remainingTimers: []
             };
         },
         created() {
@@ -24,26 +27,35 @@
             let pollServer = () => {
                 axios.get('/timer')
                     .then(response => {
-                        if (response.data.seconds > 0) {
-
-                            this.remainingTime = response.data.seconds
+                        if (response.data.start) {
+                            clearInterval(serverInterval);
+                            this.remainingTime = 180
+                            this.remainingTimers.push(30, 180);
                             clearInterval(timerInterval);
                             timerInterval = setInterval(updateTimer, 1000);
+                        }
+                        else {
+                            this.remainingTime = 0;
                         }
                     });
             };
             updateTimer = () => {
                 if (this.remainingTime === 0) {
-                    clearInterval(timerInterval);
-                    serverInterval = setInterval(pollServer, 1000)
-                    return;
+                    if (this.remainingTimers.length > 0) {
+                        this.remainingTime = this.remainingTimers[0];
+                        this.remainingTimers = this.remainingTimers.slice(1);
+                    }
+                    else {
+                        serverInterval = setInterval(pollServer, 1000)
+                        clearInterval(timerInterval);
+                    }
                 }
-                this.remainingTime -= 1;
+                else {
+                    this.remainingTime -= 1;
+                }
                 this.$forceUpdate();
             };
             timerInterval = setInterval(updateTimer, 1000);
-            axios.get('/timer')
-                .then(response => this.remainingTime = response.data.seconds);
         },
         computed: {
             tenMinutes() {

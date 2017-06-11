@@ -1993,11 +1993,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
-            remainingTime: 0
+            remainingTime: 0,
+            remainingTimers: []
         };
     },
     created: function created() {
@@ -2010,27 +2013,32 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         };
         var pollServer = function pollServer() {
             axios.get('/timer').then(function (response) {
-                if (response.data.seconds > 0) {
-
-                    _this.remainingTime = response.data.seconds;
+                if (response.data.start) {
+                    clearInterval(serverInterval);
+                    _this.remainingTime = 180;
+                    _this.remainingTimers.push(30, 180);
                     clearInterval(timerInterval);
                     timerInterval = setInterval(updateTimer, 1000);
+                } else {
+                    _this.remainingTime = 0;
                 }
             });
         };
         updateTimer = function updateTimer() {
             if (_this.remainingTime === 0) {
-                clearInterval(timerInterval);
-                serverInterval = setInterval(pollServer, 1000);
-                return;
+                if (_this.remainingTimers.length > 0) {
+                    _this.remainingTime = _this.remainingTimers[0];
+                    _this.remainingTimers = _this.remainingTimers.slice(1);
+                } else {
+                    serverInterval = setInterval(pollServer, 1000);
+                    clearInterval(timerInterval);
+                }
+            } else {
+                _this.remainingTime -= 1;
             }
-            _this.remainingTime -= 1;
             _this.$forceUpdate();
         };
         timerInterval = setInterval(updateTimer, 1000);
-        axios.get('/timer').then(function (response) {
-            return _this.remainingTime = response.data.seconds;
-        });
     },
 
     computed: {
@@ -2146,6 +2154,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 var femaleMultiplier = 3;
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2179,16 +2189,22 @@ var femaleMultiplier = 3;
         },
         maxLifts: function maxLifts() {
             return {
-                'kdk': _.uniq(_.orderBy(this.teams.map(this.kdkTotal), _.identity, 'desc')),
-                'strong': _.uniq(_.orderBy(this.teams.map(this.strongTotal), _.identity, 'desc'))
+                'kdk': _.orderBy(this.teams.map(this.kdkTotal), _.identity, 'desc'),
+                'strong': _.orderBy(this.teams.map(this.strongTotal), _.identity, 'desc')
             };
         }
     },
     methods: {
         strongPoints: function strongPoints(team) {
+            if (this.strongTotal(team) === 0) {
+                return 0;
+            }
             return this.teams.length - _.orderBy(this.teams.map(this.strongTotal), _.identity, 'desc').indexOf(this.strongTotal(team));
         },
         kdkPoints: function kdkPoints(team) {
+            if (this.kdkTotal(team) === 0) {
+                return 0;
+            }
             return this.teams.length - _.orderBy(this.teams.map(this.kdkTotal), _.identity, 'desc').indexOf(this.kdkTotal(team));
         },
         totalPoints: function totalPoints(team) {
@@ -2276,6 +2292,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ['name', 'lifts', 'kdkPoints', 'strongPoints', 'maxLifts', 'femaleLifts', 'kdkTotal', 'strongTotal', 'place'],
@@ -2288,6 +2320,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         totalPoints: function totalPoints() {
             return this.kdkPoints + this.strongPoints;
+        },
+        strongPlace: function strongPlace() {
+            if (this.strongTotal === 0) {
+                return -1;
+            }
+            return this.maxLifts.strong.indexOf(this.strongTotal) + 1;
+        },
+        kdkPlace: function kdkPlace() {
+            if (this.kdkTotal === 0) {
+                return -1;
+            }
+            return this.maxLifts.kdk.indexOf(this.kdkTotal) + 1;
         }
     }
 });
@@ -2297,7 +2341,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(1)();
-exports.push([module.i, "\n.event {\n    background-color: #d8d8d8;\n}\n.kraftdreikampf {\n    background-color: #d0d0d0;\n}\n.strongman {\n    background-color: #d8d8d8;\n}\n", ""]);
+exports.push([module.i, "\n.event {\n    background-color: white;\n}\n.kraftdreikampf {\n    background-color: aliceblue;\n}\n.strongman {\n    background-color: white;\n}\n", ""]);
 
 /***/ }),
 /* 36 */
@@ -2318,7 +2362,7 @@ exports.push([module.i, "\n.maxLift {\n    font-size: 1.2em;\n    color: red;\n}
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(1)();
-exports.push([module.i, "\n.best {\n    color: #324F17;\n}\n.second {\n    color: #3E5726;\n}\n.third {\n    color: #4A5B3A;\n}\n.divide-table {\n    border-right: solid 1px;\n}\n", ""]);
+exports.push([module.i, "\n.best {\n    color: gold;\n}\n.second {\n    color: silver;\n}\n.third {\n    color: #cd7f32;\n}\n.none {\n    color: #d0d0d0;\n}\n.divide-table {\n    border-right: solid 1px;\n}\n", ""]);
 
 /***/ }),
 /* 39 */
@@ -19764,7 +19808,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "text-align": "center"
     }
   }, [_c('table', {
-    staticClass: "table "
+    staticClass: "table"
   }, [_vm._m(0), _vm._v(" "), _c('tbody', _vm._l((_vm.sortedTeams), function(team) {
     return _c('team-standings', {
       key: team.name,
@@ -19782,7 +19826,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     })
   }))])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('thead', [_c('tr', [_c('th', {
+  return _c('thead', {
+    staticClass: "table-bordered"
+  }, [_c('tr', [_c('th', {
     staticClass: "text-center divide-table event",
     attrs: {
       "colspan": "3"
@@ -19790,12 +19836,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_vm._v(" Event ")]), _vm._v(" "), _c('th', {
     staticClass: "text-center kraftdreikampf divide-table",
     attrs: {
-      "colspan": "5"
+      "colspan": "6"
     }
   }, [_vm._v(" Kraftdreikampf ")]), _vm._v(" "), _c('th', {
     staticClass: "text-center strongman",
     attrs: {
-      "colspan": "5"
+      "colspan": "6"
     }
   }, [_vm._v(" Strongman ")])]), _vm._v(" "), _c('tr', [_c('th', {
     staticClass: "text-center event divide-table"
@@ -19812,6 +19858,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_vm._v(" Heben ")]), _vm._v(" "), _c('th', {
     staticClass: "text-center kraftdreikampf"
   }, [_vm._v(" Total ")]), _vm._v(" "), _c('th', {
+    staticClass: "text-center kraftdreikampf",
+    staticStyle: {
+      "padding": "0 0 0 0",
+      "margin": "0 0 0 0"
+    }
+  }), _vm._v(" "), _c('th', {
     staticClass: "text-center divide-table kraftdreikampf"
   }, [_vm._v(" Punkte")]), _vm._v(" "), _c('th', {
     staticClass: "text-center strongman"
@@ -19822,6 +19874,14 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_vm._v(" Flip ")]), _vm._v(" "), _c('th', {
     staticClass: "text-center strongman"
   }, [_vm._v(" Total ")]), _vm._v(" "), _c('th', {
+    staticClass: "text-center strongman",
+    staticStyle: {
+      "padding-left": "0",
+      "padding-right": "0",
+      "margin-left": "0",
+      "margin-right": "0"
+    }
+  }), _vm._v(" "), _c('th', {
     staticClass: "text-center strongman"
   }, [_vm._v(" Punkte ")])])])
 }]}
@@ -19841,7 +19901,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   return _c('div', {
     staticClass: "row"
   }, [_c('div', {
-    staticClass: "clockcase",
+    staticClass: "clockcase"
+  }, [_c('div', {
     class: {
       lastSeconds: _vm.remainingTime < 5 && _vm.remainingTime > 0
     }
@@ -19855,7 +19916,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     class: _vm.tenSeconds
   }), _vm._v(" "), _c('span', {
     class: _vm.seconds
-  })])])
+  })])])])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
@@ -19907,11 +19968,30 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     })], 1)
   }), _vm._v(" "), _c('td', {
+    staticClass: "kraftdreikampf"
+  }, [_vm._v("\n        " + _vm._s(_vm.kdkTotal) + "\n    ")]), _vm._v(" "), _c('td', {
     staticClass: "kraftdreikampf",
-    class: {
-      best: _vm.kdkTotal === _vm.maxLifts.kdk[0], second: _vm.kdkTotal === _vm.maxLifts.kdk[1], third: _vm.kdkTotal === _vm.maxLifts.kdk[2]
+    staticStyle: {
+      "padding-left": "0",
+      "padding-right": "0",
+      "margin-left": "0",
+      "margin-right": "0"
     }
-  }, [_vm._v(" " + _vm._s(_vm.kdkTotal))]), _vm._v(" "), _c('td', {
+  }, [_c('i', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.kdkPlace >= 1 && _vm.kdkPlace <= 3),
+      expression: "kdkPlace >= 1 && kdkPlace <=  3"
+    }],
+    staticClass: "fa fa-trophy",
+    class: {
+      best: _vm.kdkPlace === 1, second: _vm.kdkPlace === 2, third: _vm.kdkPlace === 3
+    },
+    staticStyle: {
+      "font-size": "1.3em"
+    }
+  })]), _vm._v(" "), _c('td', {
     staticClass: "divide-table kraftdreikampf"
   }, [_vm._v(" " + _vm._s(_vm.kdkPoints))]), _vm._v(" "), _vm._l((_vm.strongLifts), function(lift) {
     return _c('td', {
@@ -19925,11 +20005,30 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     })], 1)
   }), _vm._v(" "), _c('td', {
-    staticClass: "strongman",
-    class: {
-      best: _vm.strongTotal === _vm.maxLifts.strong[0], second: _vm.strongTotal === _vm.maxLifts.strong[1], third: _vm.strongTotal === _vm.maxLifts.strong[2]
-    }
+    staticClass: "strongman"
   }, [_vm._v(" " + _vm._s(_vm.strongTotal))]), _vm._v(" "), _c('td', {
+    staticClass: "strongman",
+    staticStyle: {
+      "padding-left": "0",
+      "padding-right": "0",
+      "margin-left": "0",
+      "margin-right": "0"
+    }
+  }, [_c('i', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.strongPlace >= 1 && _vm.strongPlace <= 3),
+      expression: "strongPlace >= 1 && strongPlace <= 3"
+    }],
+    staticClass: "fa fa-trophy",
+    class: {
+      third: _vm.strongPlace === 3, second: _vm.strongPlace === 2, best: _vm.strongPlace === 1
+    },
+    staticStyle: {
+      "font-size": "1.3em"
+    }
+  })]), _vm._v(" "), _c('td', {
     staticClass: "strongman"
   }, [_vm._v(" " + _vm._s(_vm.strongPoints))])], 2)
 },staticRenderFns: []}

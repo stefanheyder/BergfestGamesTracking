@@ -80,12 +80,12 @@
         @endif
         <div class="row">
             <div class="col-xs-12">
-                <a href="/overview/" class="btn btn-warning col-xs-12" style="font-size:30px">Start Timer</a>
+                <a href="/overview/" class="btn btn-warning col-xs-12" style="font-size:30px">Übersicht</a>
             </div>
         </div>
         <div class="row">
             <div class="col-xs-12">
-                <a href="/timer/create/180" class="btn btn-warning col-xs-12" style="font-size:30px">Übersicht</a>
+                <a href="/timer/start" class="btn btn-warning col-xs-12" style="font-size:30px">Start Timer</a>
             </div>
         </div>
     </div>

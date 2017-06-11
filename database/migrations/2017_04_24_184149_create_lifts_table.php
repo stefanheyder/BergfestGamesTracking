@@ -20,7 +20,7 @@ class CreateLiftsTable extends Migration
                 'BenchPress',
                 'Deadlift',
                 'Squat',
-                'AtlasStone',
+                'Burpee',
                 'FarmerWalk',
                 'TireFlip'
             ]);

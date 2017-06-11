@@ -10,7 +10,16 @@
                   :female="femaleLifts && femaleLifts.indexOf(lift) !== -1"
             />
         </td>
-        <td :class="{best : kdkTotal === maxLifts.kdk[0], second: kdkTotal === maxLifts.kdk[1], third: kdkTotal === maxLifts.kdk[2]}" class="kraftdreikampf"> {{kdkTotal}}</td>
+        <td  class="kraftdreikampf" >
+            {{kdkTotal}}
+        </td>
+        <td class="kraftdreikampf" style="padding-left: 0; padding-right: 0; margin-left: 0; margin-right: 0;">
+            <i :class="{best : kdkPlace === 1, second: kdkPlace === 2, third: kdkPlace === 3}"
+               class="fa fa-trophy"
+               v-show="kdkPlace >= 1 && kdkPlace <=  3"
+               style="font-size: 1.3em">
+            </i>
+        </td>
         <td class="divide-table kraftdreikampf"> {{ kdkPoints }}</td>
         <td v-for="lift in strongLifts" class="strongman">
             <lift :maxLifts="maxLifts"
@@ -19,7 +28,14 @@
                   :female="femaleLifts && femaleLifts.indexOf(lift) !== -1"
             />
         </td>
-        <td :class="{best : strongTotal === maxLifts.strong[0], second: strongTotal === maxLifts.strong[1], third: strongTotal === maxLifts.strong[2]}" class="strongman"> {{strongTotal}}</td>
+        <td :class="" class="strongman"> {{strongTotal}}</td>
+        <td class="strongman" style="padding-left: 0; padding-right: 0; margin-left: 0; margin-right: 0;">
+            <i :class="{third: strongPlace === 3, second: strongPlace === 2, best : strongPlace === 1}"
+               class="fa fa-trophy"
+               v-show="strongPlace >= 1 && strongPlace <= 3"
+               style="font-size: 1.3em">
+            </i>
+        </td>
         <td class="strongman"> {{ strongPoints }}</td>
     </tr>
 
@@ -37,6 +53,18 @@
             },
             totalPoints() {
                 return this.kdkPoints + this.strongPoints;
+            },
+            strongPlace() {
+                if (this.strongTotal === 0) {
+                    return -1;
+                }
+                return this.maxLifts.strong.indexOf(this.strongTotal) + 1;
+            },
+            kdkPlace() {
+                if (this.kdkTotal === 0) {
+                    return -1;
+                }
+                return this.maxLifts.kdk.indexOf(this.kdkTotal) + 1;
             }
         }
     }
@@ -44,13 +72,16 @@
 
 <style>
     .best {
-        color: #324F17;
+        color: gold;
     }
     .second {
-        color: #3E5726;
+        color: silver;
     }
     .third {
-        color: #4A5B3A;
+        color: #cd7f32;
+    }
+    .none {
+        color: #d0d0d0;
     }
     .divide-table {
         border-right: solid 1px;

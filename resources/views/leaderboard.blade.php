@@ -9,7 +9,7 @@
         <link href="{{mix('css/app.css')}}" rel="stylesheet" type="text/css">
     </head>
     <body>
-        <div id="app" class="container-fluid">
+        <div id="app" class="container-fluid" background-color="white">
             <timer></timer>
             <leaderboard></leaderboard>
         </div>

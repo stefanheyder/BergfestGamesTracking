@@ -14,11 +14,11 @@
 
 use Illuminate\Support\Facades\Input;
 
-Route::get('/overview', function() {
+Route::get('/', function() {
     return view('Overview');
 });
 
-Route::get('/', function () {
+Route::get('/leaderboard', function () {
     return view('leaderboard');
 });
 
@@ -55,23 +55,18 @@ Route::get('/femaleLifts', function() {
 Route::get('/timer', function() {
     $timer = App\Timer::where(['shouldStart' => true])->first();
     if (!isset($timer)) {
-        return Response::json(['seconds' => 0]);
+        return Response::json([]);
     }
     $timer->shouldStart = false;
     $timer->save();
-    return Response::json(['seconds' => $timer->seconds]);
+    return Response::json(['start' => true]);
 });
-Route::put('timer/create/{seconds}', function($seconds) {
-    // kdk timer
-    App\Timer::create(["shouldStart" => true, "seconds" => $seconds]);
-    // rest timer between sets
-    App\Timer::create(["shouldStart" => true, "seconds" => 30]);
-    // strongman timer
-    App\Timer::create(["shouldStart" => true, "seconds" => $seconds]);
+
+Route::get('/timer/start', function() {
+    $timer = new App\Timer;
+    $timer->shouldStart = true;
+    $timer->save();
     return Redirect::back();
-});
-Route::get('timer/controls', function() {
-    return view('TimerControls');
 });
 
 Route::get('lifts/{team}', function($team) {

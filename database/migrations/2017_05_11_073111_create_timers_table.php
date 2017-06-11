@@ -16,7 +16,6 @@ class CreateTimersTable extends Migration
         Schema::create('timers', function (Blueprint $table) {
             $table->increments('id');
             $table->boolean('shouldStart');
-            $table->integer('seconds');
             $table->timestamps();
         });
     }
