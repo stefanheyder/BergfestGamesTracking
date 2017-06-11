@@ -27,7 +27,7 @@ class TeamTableSeeder extends Seeder
                 ['name' => '9th Team'],
                 ['name' => '10th Team'],
                 ['name' => '11th Team'],
-                ['name' => '12th Team']
+                ['name' => 'A very very very very very very long text']
             ]);
         }
         else {

@@ -29,8 +29,8 @@
                     .then(response => {
                         if (response.data.start) {
                             clearInterval(serverInterval);
-                            this.remainingTime = 180
-                            this.remainingTimers.push(30, 180);
+                            this.remainingTime = 10;
+                            this.remainingTimers.push(180, 30, 180);
                             clearInterval(timerInterval);
                             timerInterval = setInterval(updateTimer, 1000);
                         }

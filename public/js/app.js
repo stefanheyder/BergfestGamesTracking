@@ -2015,8 +2015,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             axios.get('/timer').then(function (response) {
                 if (response.data.start) {
                     clearInterval(serverInterval);
-                    _this.remainingTime = 180;
-                    _this.remainingTimers.push(30, 180);
+                    _this.remainingTime = 10;
+                    _this.remainingTimers.push(180, 30, 180);
                     clearInterval(timerInterval);
                     timerInterval = setInterval(updateTimer, 1000);
                 } else {
@@ -2265,6 +2265,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -19954,7 +19961,13 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "divide-table event"
   }, [_vm._v(" " + _vm._s(_vm.place) + " ")]), _vm._v(" "), _c('td', {
     staticClass: "event"
-  }, [_vm._v(" " + _vm._s(_vm.name) + " ")]), _vm._v(" "), _c('td', {
+  }, [(_vm.name.length > 20) ? _c('marquee', {
+    attrs: {
+      "scrollamount": "10",
+      "behaviour": "scroll",
+      "width": "250px"
+    }
+  }, [_vm._v("\n            " + _vm._s(_vm.name) + "\n        ")]) : _c('div', [_vm._v("\n            " + _vm._s(_vm.name) + "\n        ")])], 1), _vm._v(" "), _c('td', {
     staticClass: "divide-table event"
   }, [_vm._v(" " + _vm._s(_vm.totalPoints))]), _vm._v(" "), _vm._l((_vm.kdkLifts), function(lift) {
     return _c('td', {

@@ -1,7 +1,14 @@
 <template>
     <tr>
         <td class="divide-table event"> {{ place }} </td>
-        <td class="event"> {{ name }} </td>
+        <td class="event">
+            <marquee v-if="name.length > 20" scrollamount="10" behaviour="scroll" width="250px">
+                {{ name }}
+            </marquee>
+            <div v-else>
+                {{ name }}
+            </div>
+        </td>
         <td class="divide-table event"> {{ totalPoints }}</td>
         <td v-for="lift in kdkLifts" class="kraftdreikampf">
             <lift :maxLifts="maxLifts"
