@@ -1,4 +1,17 @@
-# Setup
+# Bergfest Games Tracking
+
+This application lets you track the lifts of the 2017 Bergfest Games. Using [Laravel](https://laravel.com) we provide a server instance to which clients can connect.
+
+There are two kinds of views available:
+
+* The current standings, to be displayed on a big screen 
+  
+  ![Leaderboard](screenshots/Leaderboard.png)
+* The judges view, where judges can add the current lifts valid lifts (either by the total weight or count up the repetitions depending on the type of lift).
+
+  ![EditLift](screenshots/EditLift.png)
+
+## Setup
 
 Clone this repository, and install the [node package manager](http://npmjs.com/) as well as [composer](https://getcomposer.org/). 
 We also require a PHP version that can run [Laravel](https://laravel.com/) along with MySQL and the corresponding PHP 
