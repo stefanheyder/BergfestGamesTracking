@@ -1,6 +1,6 @@
 <template>
     <div >
-        <div :class="{femaleLift: female}">{{ displayAmount }}</div>
+        <div :class="{femaleLift: female}" >{{ displayAmount }}</div>
     </div>
 </template>
 

@@ -16,18 +16,14 @@ class TeamTableSeeder extends Seeder
         DB::table('teams')->delete();
         if (App::environment('local')) {
             DB::table('teams')->insert([
-                ['name' => '1st Team'],
-                ['name' => '2nd Team'],
-                ['name' => '3rd Team'],
-                ['name' => '4th Team'],
-                ['name' => '5th Team'],
-                ['name' => '6th Team'],
-                ['name' => '7th Team'],
-                ['name' => '8th Team'],
-                ['name' => '9th Team'],
-                ['name' => '10th Team'],
-                ['name' => '11th Team'],
-                ['name' => 'A very very very very very very long text']
+                [ 'name' => 'Atlético zu Dritt'],
+                [ 'name' => 'Fail am Platz'],
+                [ 'name' => 'Movement 2k17'],
+                [ 'name' => 'Burpees? Nein, Bier please!'],
+                [ 'name' => 'Blue Muffins :D'],
+                [ 'name' => 'Ghettoworkout e.V.'],
+                [ 'name' => 'MMA'],
+                [ 'name' => 'Chillers Of The Miller Killer']
             ]);
         }
         else {

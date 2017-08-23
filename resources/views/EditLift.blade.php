@@ -80,7 +80,7 @@
         @endif
         <div class="row">
             <div class="col-xs-12">
-                <a href="/overview/" class="btn btn-warning col-xs-12" style="font-size:30px">Übersicht</a>
+                <a href="/" class="btn btn-warning col-xs-12" style="font-size:30px">Übersicht</a>
             </div>
         </div>
         <div class="row">

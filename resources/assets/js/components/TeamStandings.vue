@@ -2,48 +2,45 @@
     <tr>
         <td class="divide-table event"> {{ place }} </td>
         <td class="event">
-            <marquee v-if="name.length > 20" scrollamount="10" behaviour="scroll" width="250px">
-                {{ name }}
-            </marquee>
-            <div v-else>
+            <div>
                 {{ name }}
             </div>
         </td>
         <td class="divide-table event"> {{ totalPoints }}</td>
-        <td v-for="lift in kdkLifts" class="kraftdreikampf">
+        <td v-for="lift in kdkLifts" class="kraftdreikampf" style="vertical-align:middle">
             <lift :maxLifts="maxLifts"
                   :amount="lifts[lift]"
                   :type="lift"
                   :female="femaleLifts && femaleLifts.indexOf(lift) !== -1"
             />
         </td>
-        <td  class="kraftdreikampf" >
+        <td  class="kraftdreikampf" style="vertical-align:middle">
             {{kdkTotal}}
         </td>
-        <td class="kraftdreikampf" style="padding-left: 0; padding-right: 0; margin-left: 0; margin-right: 0;">
+        <td class="kraftdreikampf" style="padding-left: 0; padding-right: 0; margin-left: 0; margin-right: 0; vertical-align: middle;">
             <i :class="{best : kdkPlace === 1, second: kdkPlace === 2, third: kdkPlace === 3}"
                class="fa fa-trophy"
                v-show="kdkPlace >= 1 && kdkPlace <=  3"
                style="font-size: 1.3em">
             </i>
         </td>
-        <td class="divide-table kraftdreikampf"> {{ kdkPoints }}</td>
-        <td v-for="lift in strongLifts" class="strongman">
+        <td class="divide-table kraftdreikampf" style="vertical-align:middle"> {{ kdkPoints }}</td>
+        <td v-for="lift in strongLifts" class="strongman" style="vertical-align:middle">
             <lift :maxLifts="maxLifts"
                   :amount="lifts[lift]"
                   :type="lift"
                   :female="femaleLifts && femaleLifts.indexOf(lift) !== -1"
             />
         </td>
-        <td :class="" class="strongman"> {{strongTotal}}</td>
-        <td class="strongman" style="padding-left: 0; padding-right: 0; margin-left: 0; margin-right: 0;">
+        <td :class="" class="strongman" style="vertical-align:middle"> {{strongTotal}}</td>
+        <td class="strongman" style="padding-left: 0; padding-right: 0; margin-left: 0; margin-right: 0;vertical-align: middle;">
             <i :class="{third: strongPlace === 3, second: strongPlace === 2, best : strongPlace === 1}"
                class="fa fa-trophy"
                v-show="strongPlace >= 1 && strongPlace <= 3"
                style="font-size: 1.3em">
             </i>
         </td>
-        <td class="strongman"> {{ strongPoints }}</td>
+        <td class="strongman" style="vertical-align:middle"> {{ strongPoints }}</td>
     </tr>
 
 </template>

@@ -33,26 +33,6 @@ class LiftsTableSeeder extends Seeder
         DB::table('timers')->delete();
         $faker = \Faker\Factory::create();
         if (App::environment('local')) {
-            App\Team::all()->each(function(App\Team $team) use ($faker, $liftRanges) {
-                foreach ([1,2,3] as $number) {
-                    $isFemale = $faker->boolean(10);
-                    DB::table('lifts')->insert(
-                        collect($this->getLiftsOfLifter($number))
-                            ->map(function($lift) use ($team, $liftRanges, $isFemale, $faker) {
-                                $range = $liftRanges[$isFemale ? "female" : "male"][$lift];
-                                $amount = $faker->numberBetween($range["min"], $range["max"]);
-                                return [
-                                    'Type'      => $lift,
-                                    'team_id'   => $team->id,
-                                    'amount'    => $amount,
-                                    'previous_amount'    => $amount - 5,
-                                    'female'    => $isFemale
-                                ];
-                            })
-                            ->toArray()
-                    );
-                }
-            });
         }
     }
 
