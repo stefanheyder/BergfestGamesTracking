@@ -6,11 +6,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class Lift extends Model
 {
-    protected $fillable = [
-        'amount',
-        'Type',
-        'team_id',
-        'female',
-        'previous_amount'
-    ];
+
+    public function discipline() {
+        return $this->belongsTo('App\Discipline');
+    }
+
+    public function liftingEvent() {
+        return $this->belongsTo('App\LiftingEvent');
+    }
+
+    public function lifter() {
+        return $this->belongsTo('App\Lifter');
+    }
 }

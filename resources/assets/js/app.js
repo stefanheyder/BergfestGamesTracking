@@ -17,6 +17,7 @@ window._ = require('lodash');
  */
 
 Vue.component('leaderboard', require('./components/Leaderboard.vue'));
+Vue.component('leaderboard_revamped', require('./components/leaderboard_revamped.vue'));
 Vue.component('team-standings', require('./components/TeamStandings.vue'));
 Vue.component('timer', require('./components/Clock.vue'));
 Vue.component('lift', require('./components/Lift.vue'));

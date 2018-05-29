@@ -15,17 +15,23 @@ class CreateLiftsTable extends Migration
     {
         Schema::create('lifts', function (Blueprint $table) {
             $table->increments('id');
+
             $table->float('amount')->default(0);
-            $table->enum('Type', [
-                'BenchPress',
-                'Deadlift',
-                'Squat',
-                'Burpee',
-                'FarmerWalk',
-                'TireFlip'
-            ]);
-            $table->integer('team_id');
-            $table->boolean('female')->default(false);
+
+            $table->integer('team_id')->default(0);
+
+            $table->integer('discipline_id')->unsigned();
+            $table->foreign('discipline_id')->references('id')->on('disciplines');
+
+            $table->integer('lifter_id')->unsigned();
+            $table->foreign('lifter_id')->references('id')->on('lifters');
+
+            $table->integer('lifting_event_id')->unsigned();
+            $table->foreign('lifting_event_id')->references('id')->on('lifting_events');
+
+            $table->integer('positive_judged')->default(0);
+            $table->integer('negative_judged')->default(0);
+
             $table->timestamps();
         });
     }
@@ -40,3 +46,4 @@ class CreateLiftsTable extends Migration
         Schema::dropIfExists('lifts');
     }
 }
+
